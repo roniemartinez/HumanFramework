@@ -1,5 +1,7 @@
 # List of changes to HumanFramework
 
 ## Unreleased
+
+## 0.1.0 - 2019-07-23
 ### Added
-- Initial working prototype (math, assert, web)
+- Initial working prototype (math, assert, web) (#1)

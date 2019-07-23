@@ -45,7 +45,7 @@ def assert_title(entities, context):
     title = None
     if driver:
         for entity in entities:
-            if entity['type'] == 'page_title':
+            if entity['type'] == 'string':
                 title = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
         assert driver.title == title, f'"{driver.title}" is not equal to "{title}"'
         return True

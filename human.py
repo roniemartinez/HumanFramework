@@ -16,6 +16,7 @@ from action_loader import ActionLoader
 
 logger = logging.getLogger(__name__)
 session = requests.Session()
+loader = ActionLoader()
 context = {}
 
 
@@ -42,16 +43,16 @@ def get_intent(query) -> dict:
 
 def execute_intent(query):
     global context
+    global loader
     context['QUERY'] = query
     intent = get_intent(query)
     module, action = intent.get('topScoringIntent').get('intent').split('.', 1)
-    loader = ActionLoader()
     loader.load_action_module(module)
     return loader.execute_action(module, action, intent.get('entities'), context)
 
 
-def run_test_string(test):
-    for line in test.splitlines():
+def run_test_string(test_string):
+    for line in test_string.splitlines():
         line = line.strip()
         if line:
             try:
@@ -82,18 +83,15 @@ def run_test(test_name):
     return True
 
 
-def run_trials(excluded=None):
-    parser = ArgumentParser(description="Human Framework")
-    parser.add_argument('files', nargs='*', help='Test Files')
-    arguments = parser.parse_args()
-
-    if not excluded:
-        excluded = []
+def run_trials(arguments):  # pragma: no cover
+    excluded = arguments.excluded or []
+    if isinstance(excluded, str):
+        excluded = [excluded]
     print(" human trials started ".center(80, '='), flush=True)
     print(flush=True)
     passed = failed = 0
 
-    files = arguments.files
+    files = arguments.test
     if not files:
         files = ['trials']
     for file in files:
@@ -127,10 +125,14 @@ def run_trials(excluded=None):
     return True
 
 
-def main():
-    if not run_trials():
+def main():  # pragma: no cover
+    parser = ArgumentParser(description="Human Framework")
+    parser.add_argument('test', nargs='*', help='Test files')
+    parser.add_argument('excluded', nargs='*', help='Excluded files')
+    arguments = parser.parse_args()
+    if not run_trials(arguments):
         exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     main()

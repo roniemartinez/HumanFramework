@@ -6,7 +6,7 @@
 # __email__ = "ronmarti18@gmail.com"
 import pytest
 
-from human import run_test_string
+from human import run_test_string, run_test
 
 
 def test_run_string():
@@ -22,3 +22,11 @@ def test_run_string_fail():
 add: 1, 2, 3 and 4
 result should be equal to 11
 """)
+
+
+def test_run_test():
+    assert run_test('test_simple')
+
+
+def test_run_test_failing():
+    assert not run_test('test_failing')

@@ -54,8 +54,6 @@ class ActionLoader(object):
                     'module': module
                 }
                 logger.info('action module "%s" loaded' % module_name)
-            else:
-                logger.warning('action module "%s" already loaded' % module_name)
         else:
             logger.error('cannot locate action module "%s"' % module_name)
             raise Exception('cannot locate action module "%s"' % module_name)
