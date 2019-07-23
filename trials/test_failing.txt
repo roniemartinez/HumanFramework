@@ -1,0 +1,2 @@
+add 5.2 and 3
+result should be 8

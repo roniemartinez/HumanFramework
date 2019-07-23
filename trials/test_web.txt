@@ -1,0 +1,6 @@
+open firefox browser blog.easyaspy.org/about
+title should be "EasyAsPy | About"
+close browser
+open chrome https://python.org
+page title should be "Welcome to Python.org"
+close browser
