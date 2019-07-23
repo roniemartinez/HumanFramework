@@ -24,7 +24,6 @@ def open_browser(entities, context):
     if driver:
         context['WEBDRIVER'] = driver
         driver.implicitly_wait(10)
-        driver.maximize_window()
         if url:
             if not url.startswith('http'):
                 url = 'http://' + url
