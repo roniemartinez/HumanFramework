@@ -6,7 +6,7 @@
 # __email__ = "ronmarti18@gmail.com"
 
 
-def add(entities):
+def add(entities, context):
     result = 0
     for entity in entities:
         assert entity['type'] == 'builtin.number'

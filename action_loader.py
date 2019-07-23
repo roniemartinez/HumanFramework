@@ -67,7 +67,7 @@ class ActionLoader(object):
         del self.loaded_action_modules[action_name]
         logger.info('action "%s" unloaded' % action_name)
 
-    def execute_action(self, module, action_name, action_params=None):
+    def execute_action(self, module, action_name, entities, context):
         """
         Executes action functions contained in the loaded action modules.
         """
@@ -75,4 +75,5 @@ class ActionLoader(object):
         module = action_info['module']
         if hasattr(module, action_name):
             action = getattr(module, action_name)
-            return action(action_params)
+            context['LAST_RESULT'] = result = action(entities, context)
+            return result

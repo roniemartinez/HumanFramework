@@ -11,3 +11,4 @@ pytest-html = "==1.21.1"
 [packages]
 python-dotenv = "==0.10.3"
 requests = "==2.22.0"
+selenium = "==3.141.0"

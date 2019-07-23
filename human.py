@@ -14,10 +14,16 @@ from action_loader import ActionLoader
 
 logger = logging.getLogger(__name__)
 session = requests.Session()
+context = {}
 
 
 @lru_cache()
 def get_intent(query) -> dict:
+    """
+    Get the intent of the sentence
+    :param query: Sentence
+    :return: intent object
+    """
     global session
     logger.info(f'Parsing intent for "{query}"')
     for _ in range(3):
@@ -33,8 +39,9 @@ def get_intent(query) -> dict:
 
 
 def execute_intent(query):
+    global context
     intent = get_intent(query)
     module, action = intent.get('topScoringIntent').get('intent').split('.', 1)
     loader = ActionLoader()
     loader.load_action_module(module)
-    return loader.execute_action(module, action, intent.get('entities'))
+    return loader.execute_action(module, action, intent.get('entities'), context)

@@ -10,7 +10,9 @@ pipenv install -r requirements.txt --skip-lock
 
 ## Testing
 
-sh run 
+```bash
+pipenv run pytest 
+```
 
 ## Author
 
