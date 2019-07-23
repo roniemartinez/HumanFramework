@@ -7,7 +7,7 @@
 
 
 def open_browser(entities, context):
-    browser = 'firefox'  # default browser
+    browser = 'chrome'  # default browser
     url = None
     driver = None
     for entity in entities:
@@ -15,6 +15,8 @@ def open_browser(entities, context):
             browser = entity['entity']
         elif entity['type'] == 'builtin.url':
             url = entity.get('resolution', {}).get('value')
+        elif entity['type'] == 'local_url':
+            url = entity['entity'].replace('\\', '/')
     if browser == 'firefox':
         from selenium import webdriver
         driver = webdriver.Firefox()
@@ -25,7 +27,7 @@ def open_browser(entities, context):
         context['WEBDRIVER'] = driver
         driver.implicitly_wait(10)
         if url:
-            if not url.startswith('http'):
+            if not url.startswith('http') and not url.startswith('file://'):
                 url = 'http://' + url
             driver.get(url)
         return True
@@ -48,5 +50,17 @@ def assert_title(entities, context):
             if entity['type'] == 'string':
                 title = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
         assert driver.title == title, f'"{driver.title}" is not equal to "{title}"'
+        return True
+    return False
+
+
+def assert_contain_text(entities, context):
+    driver = context.get('WEBDRIVER')
+    text = None
+    if driver:
+        for entity in entities:
+            if entity['type'] == 'string':
+                text = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
+        assert text in driver.page_source, f'page does not contain "{text}"'
         return True
     return False

@@ -7,7 +7,7 @@
 from human import get_intent
 
 
-def test_math_add():
+def test_add():
     assert get_intent('add: 1, 2, 3 and 4').get('topScoringIntent').get('intent') == 'math.add'
     assert get_intent('sum of 55.3, 6, 3').get('topScoringIntent').get('intent') == 'math.add'
     assert get_intent('calculate the sum of -10 and 5').get('topScoringIntent').get('intent') == 'math.add'

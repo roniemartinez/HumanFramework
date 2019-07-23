@@ -7,7 +7,7 @@
 from human import execute_intent
 
 
-def test_math_add():
+def test_add():
     assert 1 + 2 + 3 + 4 == execute_intent('add: 1, 2, 3 and 4')
     assert 55.3 + 6 + 3 == execute_intent('sum of 55.3, 6, 3')
     assert -10 + 5 == execute_intent('calculate the sum of -10 and 5')

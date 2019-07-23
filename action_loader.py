@@ -13,6 +13,9 @@ logger = logging.getLogger(__name__)
 
 
 class ActionLoader(object):
+    """
+    Based on https://gist.github.com/mepcotterell/6004997
+    """
 
     def __init__(self, main_module='__init__'):
         self.actions_folder = 'actions'

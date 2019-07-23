@@ -46,7 +46,7 @@ def execute_intent(query):
     global loader
     context['QUERY'] = query
     intent = get_intent(query)
-    module, action = intent.get('topScoringIntent').get('intent').split('.', 1)
+    module, action = intent.get('topScoringIntent').get('intent').rsplit('.', 1)
     loader.load_action_module(module)
     return loader.execute_action(module, action, intent.get('entities'), context)
 

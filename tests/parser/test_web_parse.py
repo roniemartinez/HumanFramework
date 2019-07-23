@@ -7,7 +7,15 @@
 from human import get_intent
 
 
-def test_web_open_browser():
+def test_open_browser():
     assert get_intent('open firefox').get('topScoringIntent').get('intent') == 'web.open_browser'
     assert get_intent('close browser').get('topScoringIntent').get('intent') == 'web.close_browser'
     assert get_intent('title should be "Facebook"').get('topScoringIntent').get('intent') == 'web.assert_title'
+    assert get_intent('page should contain "Sample Page"').get('topScoringIntent').get(
+        'intent') == 'web.assert_contain_text'
+
+
+def test_local_file():
+    import os
+    html = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'sample.html')
+    assert get_intent(f'open chrome file:///{html}').get('topScoringIntent').get('intent') == 'web.open_browser'
