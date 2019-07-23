@@ -38,3 +38,15 @@ def close_browser(entities, context):
         driver.quit()
         return True
     return False
+
+
+def assert_title(entities, context):
+    driver = context.get('WEBDRIVER')
+    title = None
+    if driver:
+        for entity in entities:
+            if entity['type'] == 'page_title':
+                title = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
+        assert driver.title == title, f'"{driver.title}" is not equal to "{title}"'
+        return True
+    return False

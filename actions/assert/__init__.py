@@ -18,4 +18,6 @@ def equal(entities, context):
                 values.append(int(value))
             except ValueError:
                 values.append(float(value))
-    return values[0] == values[1]
+    a, b = values
+    assert a == b, f"{a} is not equal to {b}"
+    return True

@@ -6,7 +6,9 @@
 # __email__ = "ronmarti18@gmail.com"
 import logging
 import os
+from argparse import ArgumentParser
 from functools import lru_cache
+from pathlib import Path
 
 import requests
 
@@ -40,8 +42,95 @@ def get_intent(query) -> dict:
 
 def execute_intent(query):
     global context
+    context['QUERY'] = query
     intent = get_intent(query)
     module, action = intent.get('topScoringIntent').get('intent').split('.', 1)
     loader = ActionLoader()
     loader.load_action_module(module)
     return loader.execute_action(module, action, intent.get('entities'), context)
+
+
+def run_test_string(test):
+    for line in test.splitlines():
+        line = line.strip()
+        if line:
+            try:
+                execute_intent(line)
+            except AssertionError as e:
+                logger.exception(e)
+                raise
+    return True
+
+
+def run_test(test_name):
+    logger.info(f"Testing: {test_name}")
+    if isinstance(test_name, str):
+        for file in Path('trials').iterdir():
+            if file.name.startswith(test_name):
+                test_name = file
+                break
+    with open(test_name, encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            try:
+                if line:
+                    execute_intent(line)
+                    logger.info(f"Line executed: {line}")
+            except Exception as e:
+                logger.exception(e)
+                return False
+    return True
+
+
+def run_trials(excluded=None):
+    parser = ArgumentParser(description="Human Framework")
+    parser.add_argument('files', nargs='*', help='Test Files')
+    arguments = parser.parse_args()
+
+    if not excluded:
+        excluded = []
+    print(" human trials started ".center(80, '='), flush=True)
+    print(flush=True)
+    passed = failed = 0
+
+    files = arguments.files
+    if not files:
+        files = ['trials']
+    for file in files:
+        path = Path(file)
+        if path.is_dir():
+            for file_ in path.iterdir():
+                if file_.name.startswith('test_') and file_.name.rsplit('.', 1)[0] not in excluded:
+                    print(file_, end=' ', flush=True)
+                    if run_test(file_):
+                        print(" - PASSED", flush=True)
+                        passed += 1
+                    else:
+                        print(" - FAILED", flush=True)
+                        failed += 1
+        else:
+            if path.name.startswith('test_') and path.name.rsplit('.', 1)[0] not in excluded:
+                print(path, end=' ', flush=True)
+                if run_test(path):
+                    print(" - PASSED", flush=True)
+                    passed += 1
+                else:
+                    print(" - FAILED", flush=True)
+                    failed += 1
+    print(flush=True)
+    result = f" {passed} passed "
+    if failed:
+        result += f"and {failed} failed "
+    print(result.center(80, '='), flush=True)
+    if failed:
+        return False
+    return True
+
+
+def main():
+    if not run_trials():
+        exit(1)
+
+
+if __name__ == '__main__':
+    main()

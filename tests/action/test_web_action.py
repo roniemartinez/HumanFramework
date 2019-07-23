@@ -14,4 +14,5 @@ def test_web():
 
 def test_web_url():
     assert execute_intent('open chrome luis.ai')
+    assert execute_intent('title should be "LUIS (Language Understanding) – Cognitive Services – Microsoft Azure"')
     assert execute_intent('close browser')

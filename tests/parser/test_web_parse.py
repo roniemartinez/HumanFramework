@@ -10,3 +10,4 @@ from human import get_intent
 def test_web_open_browser():
     assert get_intent('open firefox').get('topScoringIntent').get('intent') == 'web.open_browser'
     assert get_intent('close browser').get('topScoringIntent').get('intent') == 'web.close_browser'
+    assert get_intent('title should be "Facebook"').get('topScoringIntent').get('intent') == 'web.assert_title'
