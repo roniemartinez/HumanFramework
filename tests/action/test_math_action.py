@@ -4,7 +4,7 @@
 # __credits__ = ["Ronie Martinez"]
 # __maintainer__ = "Ronie Martinez"
 # __email__ = "ronmarti18@gmail.com"
-from human_framework import execute_intent
+from human import execute_intent
 
 
 def test_math_add():

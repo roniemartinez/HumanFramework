@@ -8,6 +8,10 @@ HumanFramework is a test automation framework that uses natural language process
 pipenv install -r requirements.txt --skip-lock
 ```
 
+## Testing
+
+sh run 
+
 ## Author
 
 - [Ronie Martinez](mailto:ronmarti18@gmail.com)
