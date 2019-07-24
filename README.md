@@ -11,7 +11,7 @@ Current version only support English.
 
 In a business setup, Human Framework lessens the need for testers who can write programs, reducing technical requirements.
 
-Human Framework was inspired by [Robot Framework](https://robotframework.org/) but leans toward 
+Human Framework was inspired by [Robot Framework](https://robotframework.org/) but leans towards 
 Natural Language Processing (NLP) for writing test cases.
 
 ## Usage

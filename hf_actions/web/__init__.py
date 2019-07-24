@@ -4,6 +4,8 @@
 # __credits__ = ["Ronie Martinez"]
 # __maintainer__ = "Ronie Martinez"
 # __email__ = "ronmarti18@gmail.com"
+from selenium import webdriver
+from selenium.webdriver.remote.webdriver import WebDriver
 
 
 def open_browser(entities, context):
@@ -18,10 +20,8 @@ def open_browser(entities, context):
         elif entity['type'] == 'local_url':
             url = entity['entity'].replace('\\', '/')
     if browser == 'firefox':
-        from selenium import webdriver
         driver = webdriver.Firefox()
     elif browser == 'chrome':
-        from selenium import webdriver
         driver = webdriver.Chrome()
     if driver:
         context['WEBDRIVER'] = driver
@@ -35,7 +35,7 @@ def open_browser(entities, context):
 
 
 def close_browser(entities, context):
-    driver = context.get('WEBDRIVER')
+    driver = context.get('WEBDRIVER')  # type: WebDriver
     if driver:
         driver.quit()
         return True
@@ -43,7 +43,7 @@ def close_browser(entities, context):
 
 
 def assert_title(entities, context):
-    driver = context.get('WEBDRIVER')
+    driver = context.get('WEBDRIVER')  # type: WebDriver
     title = None
     if driver:
         for entity in entities:
@@ -54,17 +54,81 @@ def assert_title(entities, context):
     return False
 
 
+def _find_element(driver, selector):
+    element = None
+    if selector.startswith('id:'):
+        id_ = selector.split(':', 1)[1].strip()
+        element = driver.find_element_by_id(id_)
+    elif selector.startswith('class:'):
+        class_ = selector.split(':', 1)[1].strip()
+        element = driver.find_element_by_class_name(class_)
+    elif selector.startswith('name:'):
+        name = selector.split(':', 1)[1].strip()
+        element = driver.find_element_by_name(name)
+    elif selector.startswith('tag:'):
+        tag = selector.split(':', 1)[1].strip()
+        element = driver.find_element_by_tag_name(tag)
+    elif selector.startswith('xpath:'):
+        xpath = selector.split(':', 1)[1].strip()
+        element = driver.find_element_by_xpath(xpath)
+    elif selector.startswith('css:'):
+        css = selector.split(':', 1)[1].strip()
+        element = driver.find_element_by_css_selector(css)
+    elif selector.startswith('link:'):
+        link = selector.split(':', 1)[1].strip()
+        element = driver.find_element_by_link_text(link)
+    elif selector.startswith('partial link:'):
+        link = selector.split(':', 1)[1].strip()
+        element = driver.find_element_by_partial_link_text(link)
+    return element
+
+
 def assert_contain_element(entities, context):
-    driver = context.get('WEBDRIVER')
+    driver = context.get('WEBDRIVER')  # type: WebDriver
     element_type = 'text'  # default element_type
-    selector = None
+    selector = ''  # type: str
     if driver:
         for entity in entities:
-            if entity['type'] == 'element_type':
+            # NOTE: button and radio button entities are detected at the same time
+            if entity['type'] == 'element_type' and not element_type == 'radio button':
                 element_type = entity['entity']
             elif entity['type'] == 'string':
                 selector = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
         if element_type == 'text':
             assert selector in driver.page_source, f'page does not contain "{selector}"'
             return True
+        elif element_type == 'button':
+            element = _find_element(driver, selector)
+            assert element and (element.tag_name == element_type or (
+                        element.tag_name == 'input' and element.get_attribute('type') == element_type))
+            return True
+        elif element_type == 'checkbox':
+            element = _find_element(driver, selector)
+            assert element and element.tag_name == 'input' and element.get_attribute('type') == element_type
+            return True
+        elif element_type == 'element':
+            element = _find_element(driver, selector)
+            assert element
+            return True
+        elif element_type == 'image':
+            element = _find_element(driver, selector)
+            assert element and element.tag_name == 'img'
+            return True
+        elif element_type == 'link':
+            element = _find_element(driver, selector)
+            assert element and element.tag_name == 'a'
+            return True
+        elif element_type == 'list':
+            element = _find_element(driver, selector)
+            assert element and element.tag_name in ('ul', 'ol')
+            return True
+        elif element_type == 'radio button':
+            element = _find_element(driver, selector)
+            assert element and element.tag_name == 'input' and element.get_attribute('type') == 'radio'
+            return True
+        elif element_type == 'text field':
+            element = _find_element(driver, selector)
+            assert element and element.tag_name == 'input' and element.get_attribute('type') == 'text'
+            return True
     return False
+

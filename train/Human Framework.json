@@ -1,7 +1,7 @@
 {
   "luis_schema_version": "3.2.0",
   "versionId": "0.1",
-  "name": "Human",
+  "name": "Human Framework",
   "desc": "",
   "culture": "en-us",
   "tokenizerVersion": "1.0.0",
@@ -71,6 +71,34 @@
         },
         {
           "canonicalForm": "button",
+          "list": []
+        },
+        {
+          "canonicalForm": "checkbox",
+          "list": []
+        },
+        {
+          "canonicalForm": "element",
+          "list": []
+        },
+        {
+          "canonicalForm": "image",
+          "list": []
+        },
+        {
+          "canonicalForm": "link",
+          "list": []
+        },
+        {
+          "canonicalForm": "list",
+          "list": []
+        },
+        {
+          "canonicalForm": "radio button",
+          "list": []
+        },
+        {
+          "canonicalForm": "text field",
           "list": []
         }
       ],
