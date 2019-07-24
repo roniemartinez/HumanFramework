@@ -12,7 +12,7 @@ from pathlib import Path
 
 import requests
 
-from action_loader import ActionLoader
+from human_framework.action_loader import ActionLoader
 
 logger = logging.getLogger(__name__)
 session = requests.Session()
