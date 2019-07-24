@@ -11,17 +11,19 @@ Current version only support English.
 
 In a business setup, Human Framework lessens the need for testers who can write programs, reducing technical requirements.
 
-Human Framework is inspired by [Robot Framework](https://robotframework.org/) but leans towards 
-Natural Language Processing for writing test cases.
+Human Framework was inspired by [Robot Framework](https://robotframework.org/) but leans toward 
+Natural Language Processing (NLP) for writing test cases.
 
 ## Usage
 
-### Installing dependencies
+### Installation
 
-Human Framework is written in Python. Download from https://python.org and install dependencies using the following command:
+Human Framework is written in Python. 
+Start by downloading Python from [python.org](https://python.org) and install using the following command:
 
 ```bash
-pip install -r requirements.txt
+python setup.py sdist
+pip install dist/humanframework-<version>.tar.gz
 ```
 
 ### Writing tests
@@ -37,7 +39,7 @@ close browser
 ### Running tests
 
 ```bash
-python human.py test test_web.txt
+human --test test_web.txt
 ```
 
 ## Author

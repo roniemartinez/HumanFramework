@@ -127,8 +127,8 @@ def run_trials(arguments):  # pragma: no cover
 
 def main():  # pragma: no cover
     parser = ArgumentParser(description="Human Framework")
-    parser.add_argument('test', nargs='*', help='Test files')
-    parser.add_argument('excluded', nargs='*', help='Excluded files')
+    parser.add_argument('-t', '--test', nargs='*', help='Test files')
+    parser.add_argument('-x', '--excluded', nargs='*', help='Excluded files')
     arguments = parser.parse_args()
     if not run_trials(arguments):
         exit(1)

@@ -8,6 +8,7 @@ import imp
 import os
 import logging
 import collections
+import site
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +19,7 @@ class ActionLoader(object):
     """
 
     def __init__(self, main_module='__init__'):
-        self.actions_folder = 'actions'
+        self.actions_folder = 'hf_actions'
         self.main_module = main_module
         self.loaded_action_modules = collections.OrderedDict({})
 
@@ -27,14 +28,21 @@ class ActionLoader(object):
         Returns a dictionary of action modules available in actions directory
         """
         action_modules = {}
-        for possible_module in os.listdir(self.actions_folder):
-            location = os.path.join(self.actions_folder, possible_module)
-            if os.path.isdir(location) and self.main_module + '.py' in os.listdir(location):
-                info = imp.find_module(self.main_module, [location])
-                action_modules[possible_module] = {
-                    'name': possible_module,
-                    'info': info
-                }
+        site_packages = list(filter(lambda x: x.endswith('site-packages'), site.sys.path))
+        for search_dir in [os.path.abspath(os.path.curdir)] + site_packages:
+            actions_folder = os.path.join(search_dir, self.actions_folder)
+            if not os.path.isdir(actions_folder):
+                continue
+            for possible_module in os.listdir(actions_folder):
+                if possible_module in action_modules:
+                    continue
+                location = os.path.join(actions_folder, possible_module)
+                if os.path.isdir(location) and self.main_module + '.py' in os.listdir(location):
+                    info = imp.find_module(self.main_module, [location])
+                    action_modules[possible_module] = {
+                        'name': possible_module,
+                        'info': info,
+                    }
         return action_modules
 
     def get_loaded_action_modules(self):
