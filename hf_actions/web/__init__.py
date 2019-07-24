@@ -54,13 +54,17 @@ def assert_title(entities, context):
     return False
 
 
-def assert_contain_text(entities, context):
+def assert_contain_element(entities, context):
     driver = context.get('WEBDRIVER')
-    text = None
+    element_type = 'text'  # default element_type
+    selector = None
     if driver:
         for entity in entities:
-            if entity['type'] == 'string':
-                text = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
-        assert text in driver.page_source, f'page does not contain "{text}"'
-        return True
+            if entity['type'] == 'element_type':
+                element_type = entity['entity']
+            elif entity['type'] == 'string':
+                selector = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
+        if element_type == 'text':
+            assert selector in driver.page_source, f'page does not contain "{selector}"'
+            return True
     return False

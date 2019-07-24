@@ -1,0 +1,284 @@
+{
+  "luis_schema_version": "3.2.0",
+  "versionId": "0.1",
+  "name": "Human",
+  "desc": "",
+  "culture": "en-us",
+  "tokenizerVersion": "1.0.0",
+  "intents": [
+    {
+      "name": "assert.equal"
+    },
+    {
+      "name": "math.add"
+    },
+    {
+      "name": "None"
+    },
+    {
+      "name": "web.assert_contain_element"
+    },
+    {
+      "name": "web.assert_title"
+    },
+    {
+      "name": "web.close_browser"
+    },
+    {
+      "name": "web.open_browser"
+    }
+  ],
+  "entities": [
+    {
+      "name": "last_result",
+      "roles": []
+    }
+  ],
+  "composites": [],
+  "closedLists": [
+    {
+      "name": "browser",
+      "subLists": [
+        {
+          "canonicalForm": "firefox",
+          "list": []
+        },
+        {
+          "canonicalForm": "chrome",
+          "list": []
+        },
+        {
+          "canonicalForm": "internet explorer",
+          "list": []
+        },
+        {
+          "canonicalForm": "safari",
+          "list": []
+        },
+        {
+          "canonicalForm": "opera",
+          "list": []
+        }
+      ],
+      "roles": []
+    },
+    {
+      "name": "element_type",
+      "subLists": [
+        {
+          "canonicalForm": "text",
+          "list": []
+        },
+        {
+          "canonicalForm": "button",
+          "list": []
+        }
+      ],
+      "roles": []
+    }
+  ],
+  "patternAnyEntities": [],
+  "regex_entities": [
+    {
+      "name": "local_url",
+      "regexPattern": "file://.+",
+      "roles": []
+    },
+    {
+      "name": "string",
+      "regexPattern": "\"(.+)\"",
+      "roles": []
+    }
+  ],
+  "prebuiltEntities": [
+    {
+      "name": "number",
+      "roles": []
+    },
+    {
+      "name": "url",
+      "roles": []
+    }
+  ],
+  "model_features": [],
+  "regex_features": [],
+  "patterns": [],
+  "utterances": [
+    {
+      "text": "add 1 and 2",
+      "intent": "math.add",
+      "entities": []
+    },
+    {
+      "text": "add 1, 2, 3, 4",
+      "intent": "math.add",
+      "entities": []
+    },
+    {
+      "text": "add: 1, 2, 3, 4",
+      "intent": "math.add",
+      "entities": []
+    },
+    {
+      "text": "answer should be 3,000",
+      "intent": "assert.equal",
+      "entities": [
+        {
+          "entity": "last_result",
+          "startPos": 0,
+          "endPos": 5
+        }
+      ]
+    },
+    {
+      "text": "answer should be 6",
+      "intent": "assert.equal",
+      "entities": [
+        {
+          "entity": "last_result",
+          "startPos": 0,
+          "endPos": 5
+        }
+      ]
+    },
+    {
+      "text": "close browser",
+      "intent": "web.close_browser",
+      "entities": []
+    },
+    {
+      "text": "close chrome",
+      "intent": "web.close_browser",
+      "entities": []
+    },
+    {
+      "text": "close firefox",
+      "intent": "web.close_browser",
+      "entities": []
+    },
+    {
+      "text": "open browser",
+      "intent": "web.open_browser",
+      "entities": []
+    },
+    {
+      "text": "open browser file:///d:/sample.html",
+      "intent": "web.open_browser",
+      "entities": []
+    },
+    {
+      "text": "open browser google.com",
+      "intent": "web.open_browser",
+      "entities": []
+    },
+    {
+      "text": "open chrome",
+      "intent": "web.open_browser",
+      "entities": []
+    },
+    {
+      "text": "open chrome browser",
+      "intent": "web.open_browser",
+      "entities": []
+    },
+    {
+      "text": "open firefox",
+      "intent": "web.open_browser",
+      "entities": []
+    },
+    {
+      "text": "open firefox browser",
+      "intent": "web.open_browser",
+      "entities": []
+    },
+    {
+      "text": "open google.com in firefox",
+      "intent": "web.open_browser",
+      "entities": []
+    },
+    {
+      "text": "page should contain \"sample page\"",
+      "intent": "web.assert_contain_element",
+      "entities": []
+    },
+    {
+      "text": "page should contain text \"hello world!\"",
+      "intent": "web.assert_contain_element",
+      "entities": []
+    },
+    {
+      "text": "page title should be \"google\"",
+      "intent": "web.assert_title",
+      "entities": []
+    },
+    {
+      "text": "page title should be \"welcome to python.org\"",
+      "intent": "web.assert_title",
+      "entities": []
+    },
+    {
+      "text": "result should be -1",
+      "intent": "assert.equal",
+      "entities": [
+        {
+          "entity": "last_result",
+          "startPos": 0,
+          "endPos": 5
+        }
+      ]
+    },
+    {
+      "text": "result should be 10",
+      "intent": "assert.equal",
+      "entities": [
+        {
+          "entity": "last_result",
+          "startPos": 0,
+          "endPos": 5
+        }
+      ]
+    },
+    {
+      "text": "result should be 5.5",
+      "intent": "assert.equal",
+      "entities": [
+        {
+          "entity": "last_result",
+          "startPos": 0,
+          "endPos": 5
+        }
+      ]
+    },
+    {
+      "text": "sum of 1 and 2",
+      "intent": "math.add",
+      "entities": []
+    },
+    {
+      "text": "sum of 1, 2, 3, 4",
+      "intent": "math.add",
+      "entities": []
+    },
+    {
+      "text": "sum: 1 and 2",
+      "intent": "math.add",
+      "entities": []
+    },
+    {
+      "text": "title should be \"easyaspy | about\"",
+      "intent": "web.assert_title",
+      "entities": []
+    },
+    {
+      "text": "title should be \"hello world\"",
+      "intent": "web.assert_title",
+      "entities": []
+    },
+    {
+      "text": "title should be \"luis (language understanding) - cognitive services - microsoft azure\"",
+      "intent": "web.assert_title",
+      "entities": []
+    }
+  ],
+  "settings": []
+}

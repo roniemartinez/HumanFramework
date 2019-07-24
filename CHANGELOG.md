@@ -5,6 +5,7 @@
 - Support for minimal web testing (#2)
 - Add Python setup
 - Load actions from site-packages
+- Training data from LUIS
 
 ### Changed
 - Source code restriction in LICENSE
