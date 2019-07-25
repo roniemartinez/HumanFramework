@@ -12,7 +12,7 @@ from pathlib import Path
 
 import requests
 
-from action_loader import ActionLoader
+from human_framework.action_loader import ActionLoader
 
 logger = logging.getLogger(__name__)
 session = requests.Session()
@@ -41,26 +41,45 @@ def get_intent(query) -> dict:
     return {}
 
 
-def execute_intent(query):
+def execute_intent(intent):
     global context
     global loader
+    context['QUERY'] = intent.get('query')
+    module, action = intent.get('topScoringIntent').get('intent').rsplit('.', 1)
+    entities = intent.get('entities')
+    loader.load_action_module(module)
+    return loader.execute_action(module, action, entities, context)
+
+
+def execute(query):
+    global context
     context['QUERY'] = query
     intent = get_intent(query)
-    module, action = intent.get('topScoringIntent').get('intent').split('.', 1)
-    loader.load_action_module(module)
-    return loader.execute_action(module, action, intent.get('entities'), context)
+    return execute_intent(intent)
 
 
 def run_test_string(test_string):
+    try:
+        for intent in get_intents(test_string):
+            if not execute_intent(intent):
+                return False
+    except Exception as e:
+        logger.exception(e)
+        return False
+    return True
+
+
+def get_intents(test_string):
+    intents = []
     for line in test_string.splitlines():
         line = line.strip()
         if line:
             try:
-                execute_intent(line)
+                intents.append(get_intent(line))
             except AssertionError as e:
                 logger.exception(e)
                 raise
-    return True
+    return intents
 
 
 def run_test(test_name):
@@ -71,16 +90,7 @@ def run_test(test_name):
                 test_name = file
                 break
     with open(test_name, encoding='utf-8') as f:
-        for line in f:
-            line = line.strip()
-            try:
-                if line:
-                    execute_intent(line)
-                    logger.info(f"Line executed: {line}")
-            except Exception as e:
-                logger.exception(e)
-                return False
-    return True
+        return run_test_string(f.read())
 
 
 def run_trials(arguments):  # pragma: no cover
@@ -127,8 +137,8 @@ def run_trials(arguments):  # pragma: no cover
 
 def main():  # pragma: no cover
     parser = ArgumentParser(description="Human Framework")
-    parser.add_argument('test', nargs='*', help='Test files')
-    parser.add_argument('excluded', nargs='*', help='Excluded files')
+    parser.add_argument('-t', '--test', nargs='*', help='Test files')
+    parser.add_argument('-x', '--excluded', nargs='*', help='Excluded files')
     arguments = parser.parse_args()
     if not run_trials(arguments):
         exit(1)

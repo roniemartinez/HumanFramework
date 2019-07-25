@@ -1,23 +1,29 @@
-# HumanFramework: Test Automation Framework for Humans™
+# Human Framework: Test Automation Framework for Humans™
 
-HumanFramework is a test automation framework that uses Natural Language Understanding (NLU).
+Human Framework is a test automation framework that uses Natural Language Understanding (NLU).
 It currently depend on [Microsoft LUIS (Language Understanding)](https://www.luis.ai/) for Intent Classification.
 
-HumanFramework makes writing test cases easier by letting testers write test cases without the hassle of memorizing
+Human Framework makes writing test cases easier by letting testers write test cases without the hassle of memorizing
 any programming keyword and using the language they are comfortable with - the human language.
 
-LUIS (and other NLU software) makes it easier to write tests on any written language.
+LUIS (and other NLU software) makes it possible to write test cases on any written language. 
+Current version only support English. 
 
-In a business setup, HumanFramework lessens the need for testers who can write programs, reducing technical requirements.
+In a business setup, Human Framework lessens the need for testers who can write programs, reducing technical requirements.
+
+Human Framework was inspired by [Robot Framework](https://robotframework.org/) but leans towards 
+Natural Language Processing (NLP) for writing test cases.
 
 ## Usage
 
-### Installing dependencies
+### Installation
 
-HumanFramework is written in Python. Download from https://python.org and install dependencies using the following command:
+Human Framework is written in Python. 
+Start by downloading Python from [python.org](https://python.org) and install using the following command:
 
 ```bash
-pip install -r requirements.txt
+python setup.py sdist
+pip install dist/humanframework-<version>.tar.gz
 ```
 
 ### Writing tests
@@ -33,13 +39,9 @@ close browser
 ### Running tests
 
 ```bash
-python human.py test test_web.txt
+human --test test_web.txt
 ```
 
 ## Author
 
 - [Ronie Martinez](mailto:ronmarti18@gmail.com)
-
-## References
-
-- [Simple Python Plugin Manager](https://gist.github.com/mepcotterell/6004997)
