@@ -1,6 +1,8 @@
 # List of changes to HumanFramework
 
 ## Unreleased
+
+## 0.2.0 - 2019-07-25
 ### Added
 - Support for minimal web testing (#2)
 - Add Python setup

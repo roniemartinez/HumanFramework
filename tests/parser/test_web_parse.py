@@ -12,7 +12,7 @@ def test_open_browser():
     assert get_intent('close browser').get('topScoringIntent').get('intent') == 'web.close_browser'
     assert get_intent('title should be "Facebook"').get('topScoringIntent').get('intent') == 'web.assert_title'
     assert get_intent('page should contain "Sample Page"').get('topScoringIntent').get(
-        'intent') == 'web.assert_contain_text'
+        'intent') == 'web.assert_contain_element'
 
 
 def test_local_file():

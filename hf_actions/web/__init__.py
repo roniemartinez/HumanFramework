@@ -92,7 +92,9 @@ def assert_contain_element(entities, context):
             # NOTE: button and radio button entities are detected at the same time
             if entity['type'] == 'element_type' and not element_type == 'radio button':
                 element_type = entity['entity']
-            elif entity['type'] == 'string':
+            elif entity['type'] == 'selector':
+                selector = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
+            elif entity['type'] == 'string' and not selector:
                 selector = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
         if element_type == 'text':
             assert selector in driver.page_source, f'page does not contain "{selector}"'
@@ -100,7 +102,7 @@ def assert_contain_element(entities, context):
         elif element_type == 'button':
             element = _find_element(driver, selector)
             assert element and (element.tag_name == element_type or (
-                        element.tag_name == 'input' and element.get_attribute('type') == element_type))
+                    element.tag_name == 'input' and element.get_attribute('type') == element_type))
             return True
         elif element_type == 'checkbox':
             element = _find_element(driver, selector)
@@ -132,3 +134,61 @@ def assert_contain_element(entities, context):
             return True
     return False
 
+
+def click_element(entities, context):
+    driver = context.get('WEBDRIVER')  # type: WebDriver
+    element_type = 'text'  # default element_type
+    selector = ''  # type: str
+    if driver:
+        for entity in entities:
+            # NOTE: button and radio button entities are detected at the same time
+            if entity['type'] == 'element_type' and not element_type == 'radio button':
+                element_type = entity['entity']
+            elif entity['type'] == 'selector':
+                selector = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
+            elif entity['type'] == 'string' and not selector:
+                selector = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
+        if element_type == 'button':
+            element = _find_element(driver, selector)
+            assert element and (element.tag_name == element_type or (
+                    element.tag_name == 'input' and element.get_attribute('type') == element_type))
+            return True
+        elif element_type == 'element':
+            element = _find_element(driver, selector)
+            assert element
+            element.click()
+            return True
+        elif element_type == 'image':
+            element = _find_element(driver, selector)
+            assert element and element.tag_name == 'img'
+            element.click()
+            return True
+        elif element_type == 'link':
+            element = _find_element(driver, selector)
+            assert element and element.tag_name == 'a'
+            element.click()
+            return True
+    return False
+
+
+# noinspection PyShadowingBuiltins
+def input(entities, context):
+    driver = context.get('WEBDRIVER')  # type: WebDriver
+    element_type = 'text'  # default element_type
+    input_string = ''  # type: str
+    selector = ''  # type: str
+    if driver:
+        for entity in entities:
+            # NOTE: button and radio button entities are detected at the same time
+            if entity['type'] == 'element_type':
+                element_type = entity['entity']
+            elif entity['type'] == 'string':
+                input_string = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
+            elif entity['type'] == 'selector':
+                selector = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
+        if element_type in ('element', 'text field'):
+            element = _find_element(driver, selector)
+            assert element
+            element.send_keys(input_string)
+            return True
+    return False
