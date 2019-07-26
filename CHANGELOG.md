@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## 0.2.2 - 2019-07-26
+### Fixed
+- .env not loaded when not using pipenv (#7)
+
+### Added 
+- Include assert.not_equal
+- Training data for adding using + sign
+
+### Changed
+- Replace multiply with add
+
 ## 0.2.1 - 2019-07-26
 ### Added
 - Step-by-step guide (#5)

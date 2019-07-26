@@ -10,3 +10,4 @@ from human import execute
 def test_assert_math_add():
     assert 10 == execute('add: 1, 2, 3 and 4')
     assert execute('result should be equal to 10')
+    assert execute('result should not be equal to 20')
