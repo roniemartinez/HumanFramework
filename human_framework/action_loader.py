@@ -28,8 +28,7 @@ class ActionLoader(object):
         Returns a dictionary of action modules available in actions directory
         """
         action_modules = {}
-        site_packages = list(filter(lambda x: x.endswith('site-packages'), site.sys.path))
-        for search_dir in [os.path.abspath(os.path.curdir)] + site_packages:
+        for search_dir in site.sys.path:
             actions_folder = os.path.join(search_dir, self.actions_folder)
             if not os.path.isdir(actions_folder):
                 continue

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 0.2.3 - 2019-07-26
+- Fix action lookup
+
 ## 0.2.2 - 2019-07-26
 ### Fixed
 - .env not loaded when not using pipenv (#7)
