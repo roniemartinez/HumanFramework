@@ -1,4 +1,4 @@
 find the sum of the numbers 20, 15.4, -3, 100, 70, 36
 result should be 238.4
-multiply the numbers 10,000,000, 300, and 20.3
+10,000,000 + 300 + 20.3
 the answer should be 10,000,320.3

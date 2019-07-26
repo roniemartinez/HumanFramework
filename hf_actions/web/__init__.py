@@ -23,6 +23,12 @@ def open_browser(entities, context):
         driver = webdriver.Firefox()
     elif browser == 'chrome':
         driver = webdriver.Chrome()
+    elif browser == 'internet explorer':
+        driver = webdriver.Ie()
+    elif browser == 'safari':
+        driver = webdriver.Safari()
+    elif browser == 'opera':
+        driver = webdriver.Opera()
     if driver:
         context['WEBDRIVER'] = driver
         driver.implicitly_wait(10)

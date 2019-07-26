@@ -21,3 +21,20 @@ def equal(entities, context):
     a, b = values
     assert a == b, f"{a} is not equal to {b}"
     return True
+
+
+def not_equal(entities, context):
+    assert len(entities) == 2
+    values = []
+    for entity in entities:
+        if entity['type'] == 'last_result':
+            values.append(context['LAST_RESULT'])
+        elif entity['type'] == 'builtin.number':
+            value = entity.get('resolution').get('value')
+            try:
+                values.append(int(value))
+            except ValueError:
+                values.append(float(value))
+    a, b = values
+    assert a != b, f"{a} is equal to {b}"
+    return True

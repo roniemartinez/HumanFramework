@@ -11,6 +11,7 @@ from functools import lru_cache
 from pathlib import Path
 
 import requests
+from dotenv import load_dotenv
 
 from human_framework.action_loader import ActionLoader
 
@@ -18,6 +19,7 @@ logger = logging.getLogger(__name__)
 session = requests.Session()
 loader = ActionLoader()
 context = {}
+is_env_loaded = False
 
 
 @lru_cache()
@@ -28,6 +30,10 @@ def get_intent(query) -> dict:
     :return: intent object
     """
     global session
+    global is_env_loaded
+    if not is_env_loaded:
+        load_dotenv()
+        is_env_loaded = True
     logger.info(f'Parsing intent for "{query}"')
     for _ in range(3):
         try:

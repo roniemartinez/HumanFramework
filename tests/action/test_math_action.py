@@ -13,4 +13,5 @@ def test_add():
     assert -10 + 5 == execute('calculate the sum of -10 and 5')
     assert 10_000_300 + 20.3 == execute('add 10,000,300 and 20.3')
     assert 10_000_000 + 300 + 20.3 == execute('add 10,000,000, 300, and 20.3')
+    assert 10_000_000 + 300 + 20.3 == execute('10,000,000 + 300+20.3')
     assert 100_000 + 300 + 20.3 == execute('add 1e5, 300, and 20.3')
