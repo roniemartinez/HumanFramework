@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.2.1 - 2019-07-26
+### Added
+- Step-by-step guide (#5)
+
 ## 0.2.0 - 2019-07-25
 ### Added
 - Support for minimal web testing (#2)
