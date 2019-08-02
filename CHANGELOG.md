@@ -7,6 +7,7 @@
 - Testing a sample login page
 - Load .env from main()
 - web.assert_element_status
+- Setup Human Framework endpoint from terminal (#9)
 
 ## 0.2.3 - 2019-07-26
 ### Fixed
