@@ -1,6 +1,6 @@
 {
   "luis_schema_version": "3.2.0",
-  "versionId": "0.1",
+  "versionId": "0.2",
   "name": "Human Framework",
   "desc": "",
   "culture": "en-us",
@@ -20,6 +20,9 @@
     },
     {
       "name": "web.assert_contain_element"
+    },
+    {
+      "name": "web.assert_element_status"
     },
     {
       "name": "web.assert_title"
@@ -45,6 +48,24 @@
   ],
   "composites": [],
   "closedLists": [
+    {
+      "name": "boolean_attribute",
+      "subLists": [
+        {
+          "canonicalForm": "checked",
+          "list": []
+        },
+        {
+          "canonicalForm": "disabled",
+          "list": []
+        },
+        {
+          "canonicalForm": "enabled",
+          "list": []
+        }
+      ],
+      "roles": []
+    },
     {
       "name": "browser",
       "subLists": [
@@ -231,6 +252,11 @@
       "entities": []
     },
     {
+      "text": "click element \"class:my-class\"",
+      "intent": "web.click_element",
+      "entities": []
+    },
+    {
       "text": "close browser",
       "intent": "web.close_browser",
       "entities": []
@@ -243,6 +269,16 @@
     {
       "text": "close firefox",
       "intent": "web.close_browser",
+      "entities": []
+    },
+    {
+      "text": "element \"class:btn\" should be disabled",
+      "intent": "web.assert_element_status",
+      "entities": []
+    },
+    {
+      "text": "element \"id:hello\" should be enabled",
+      "intent": "web.assert_element_status",
       "entities": []
     },
     {
@@ -403,6 +439,11 @@
     {
       "text": "title should be \"luis (language understanding) - cognitive services - microsoft azure\"",
       "intent": "web.assert_title",
+      "entities": []
+    },
+    {
+      "text": "type \"hello world\" into element \"name:my-input\"",
+      "intent": "web.input",
       "entities": []
     }
   ],

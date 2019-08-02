@@ -4,8 +4,13 @@
 # __credits__ = ["Ronie Martinez"]
 # __maintainer__ = "Ronie Martinez"
 # __email__ = "ronmarti18@gmail.com"
+import logging
+
 from selenium import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.support.wait import WebDriverWait
+
+logger = logging.getLogger(__name__)
 
 
 def open_browser(entities, context):
@@ -145,6 +150,7 @@ def click_element(entities, context):
     driver = context.get('WEBDRIVER')  # type: WebDriver
     element_type = 'text'  # default element_type
     selector = ''  # type: str
+    element = None
     if driver:
         for entity in entities:
             # NOTE: button and radio button entities are detected at the same time
@@ -158,20 +164,18 @@ def click_element(entities, context):
             element = _find_element(driver, selector)
             assert element and (element.tag_name == element_type or (
                     element.tag_name == 'input' and element.get_attribute('type') == element_type))
-            return True
         elif element_type == 'element':
             element = _find_element(driver, selector)
             assert element
-            element.click()
-            return True
         elif element_type == 'image':
             element = _find_element(driver, selector)
             assert element and element.tag_name == 'img'
-            element.click()
-            return True
         elif element_type == 'link':
             element = _find_element(driver, selector)
             assert element and element.tag_name == 'a'
+        if element:
+            wait = WebDriverWait(driver, 10)
+            wait.until_not(lambda x: element.get_attribute('hidden') or element.get_attribute('disabled'))
             element.click()
             return True
     return False
@@ -180,7 +184,7 @@ def click_element(entities, context):
 # noinspection PyShadowingBuiltins
 def input(entities, context):
     driver = context.get('WEBDRIVER')  # type: WebDriver
-    element_type = 'text'  # default element_type
+    element_type = 'element'  # default element_type
     input_string = ''  # type: str
     selector = ''  # type: str
     if driver:
@@ -197,4 +201,26 @@ def input(entities, context):
             assert element
             element.send_keys(input_string)
             return True
+    return False
+
+
+def assert_element_status(entities, context):
+    driver = context.get('WEBDRIVER')  # type: WebDriver
+    selector = ''  # type: str
+    boolean_attribute = ''  # type: str
+    if driver:
+        for entity in entities:
+            if entity['type'] == 'selector':
+                selector = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
+            elif entity['type'] == 'boolean_attribute':
+                boolean_attribute = entity['entity']
+        element = _find_element(driver, selector)
+        if element:
+            wait = WebDriverWait(driver, 10)
+            if boolean_attribute in ('enabled', ):  # TODO: map to reverse
+                wait.until_not(lambda x: element.get_attribute('disabled'))
+                return True
+            else:
+                wait.until(lambda x: element.get_attribute('disabled'))
+                return True
     return False

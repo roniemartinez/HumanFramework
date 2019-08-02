@@ -34,7 +34,7 @@ Natural Language Processing (NLP) for writing test cases.
 
 ### Create a LUIS.ai account
 
-1. Download the Human Framework training data from https://github.com/roniemartinez/HumanFramework/blob/master/train/Human%20Framework.json
+1. Download the Human Framework training data from https://github.com/roniemartinez/HumanFramework/blob/master/train/en.json
 2. Go to [LUIS.a](https://luis.ai) and create an account
 3. Click `Import new app`
 
@@ -67,11 +67,6 @@ Natural Language Processing (NLP) for writing test cases.
     
 4. Go back to `Keys and Endpoints` and select the environment you used to publish your app (labeled `URL referencing slot`)
 5. Copy the endpoint assigned resource in #2
-6. On your desired local working directory, create a file named `.env` and assign the copied URL to `LUIS_ENDPOINT`
-
-```text
-LUIS_ENDPOINT=<paste-endpoint-here>
-```
 
 ### Installing Human Framework
 
@@ -80,6 +75,14 @@ Human Framework using the following command in terminal/cmd:
 
 ```bash
 pip install -e git+git@github.com:roniemartinez/HumanFramework.git#egg=humanframework
+```
+
+### Setting up Human Framework
+
+Use the copied endpoint from LUIS.ai and setup Human Framework
+ 
+```bash
+human config --luis-endpoint <endpoint>
 ```
 
 Note that in order to install Human Framework, **access to the Github private repository is REQUIRED**.
@@ -107,7 +110,7 @@ To run the tests in `test_web.txt`, enter the following on the terminal/cmd:
 human --test test_web.txt
 ```
 
-### Auto-discovery of tests
+### Test autodiscovery
 
 Files inside the `trial` folder that starts with the text `test_` are automatically executed.
 

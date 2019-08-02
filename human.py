@@ -6,23 +6,30 @@
 # __email__ = "ronmarti18@gmail.com"
 import logging
 import os
+import sys
 from argparse import ArgumentParser
-from functools import lru_cache
 from pathlib import Path
 
+import diskcache
 import requests
-from dotenv import load_dotenv
+from dotenv import load_dotenv, set_key
 
 from human_framework.action_loader import ActionLoader
 
 logger = logging.getLogger(__name__)
+CONFIG_DIR = os.path.join(os.path.expanduser('~'), '.humanframework')
+CONFIG_FILE = os.path.join(CONFIG_DIR, 'config')
+if not os.path.exists(CONFIG_DIR):
+    os.makedirs(CONFIG_DIR, exist_ok=True)
+if not os.path.exists(CONFIG_FILE):
+    open(CONFIG_FILE, 'a').close()
 session = requests.Session()
 loader = ActionLoader()
 context = {}
 is_env_loaded = False
+cache = diskcache.Cache(directory=CONFIG_DIR)  # type: diskcache.Cache
 
 
-@lru_cache()
 def get_intent(query) -> dict:
     """
     Get the intent of the sentence
@@ -30,17 +37,24 @@ def get_intent(query) -> dict:
     :return: intent object
     """
     global session
+    global cache
     global is_env_loaded
     if not is_env_loaded:
-        load_dotenv()
+        load_dotenv(dotenv_path=os.path.join(os.path.curdir, '.env'))
         is_env_loaded = True
     logger.info(f'Parsing intent for "{query}"')
+    q = ' '.join(query.lower().split())
+    cached_intent = cache.get(q)
+    if cached_intent:
+        logger.info(f'Found cached intent: {cached_intent.get("topScoringIntent").get("intent")}')
+        return cached_intent
     for _ in range(3):
         try:
             response = session.get(os.getenv('LUIS_ENDPOINT') + query)
             response.raise_for_status()
             intent = response.json()
-            logging.info(f'Intent: {intent}')
+            logging.info(f'Resolved intent: {intent.get("topScoringIntent").get("intent")}')
+            cache.set(q, intent)
             return intent
         except Exception as e:
             logger.exception(e)
@@ -65,12 +79,16 @@ def execute(query):
 
 
 def run_test_string(test_string):
+    intent = {}
     try:
         for intent in get_intents(test_string):
+            logger.info('Executing test: %s', intent.get('query'))
             if not execute_intent(intent):
                 return False
-    except Exception as e:
-        logger.exception(e)
+    except Exception:
+        print()
+        logger.error(f"Failed on test: query={intent.get('query')}, "
+                     f"intent={intent.get('topScoringIntent').get('intent')}")
         return False
     return True
 
@@ -120,7 +138,7 @@ def run_trials(arguments):  # pragma: no cover
                         print(" - PASSED", flush=True)
                         passed += 1
                     else:
-                        print(" - FAILED", flush=True)
+                        print(file_, "- FAILED", flush=True)
                         failed += 1
         else:
             if path.name.startswith('test_') and path.name.rsplit('.', 1)[0] not in excluded:
@@ -129,7 +147,7 @@ def run_trials(arguments):  # pragma: no cover
                     print(" - PASSED", flush=True)
                     passed += 1
                 else:
-                    print(" - FAILED", flush=True)
+                    print(path, "- FAILED", flush=True)
                     failed += 1
     print(flush=True)
     result = f" {passed} passed "
@@ -142,12 +160,46 @@ def run_trials(arguments):  # pragma: no cover
 
 
 def main():  # pragma: no cover
+    global is_env_loaded
     parser = ArgumentParser(description="Human Framework")
-    parser.add_argument('-t', '--test', nargs='*', help='Test files')
-    parser.add_argument('-x', '--excluded', nargs='*', help='Excluded files')
+    parser.add_argument('-t', '--test', nargs='*', dest='test', help='Test files')
+    parser.add_argument('-x', '--excluded', nargs='*', dest='excluded', help='Excluded files')
+    sub_commands = parser.add_subparsers()
+    config_parser = sub_commands.add_parser('config', help="Human Framework configuration")
+    config_parser.add_argument('--luis-endpoint', nargs='?', dest='luis_endpoint', required=True,
+                               help='Endpoint from LUIS.ai', )
     arguments = parser.parse_args()
+    try:
+        if arguments.luis_endpoint:
+            set_key(dotenv_path=CONFIG_FILE, key_to_set='LUIS_ENDPOINT',
+                    value_to_set=arguments.luis_endpoint)
+        else:
+            load_dotenv(dotenv_path=CONFIG_FILE)
+            luis_endpoint = os.getenv('LUIS_ENDPOINT')
+            if luis_endpoint:
+                print(f"\nYour LUIS.ai endpoint is '{luis_endpoint}'")
+            else:
+                print_configuration_warning()
+        return
+    except AttributeError:
+        pass
+
+    load_dotenv(dotenv_path=CONFIG_FILE)
+    is_env_loaded = True
+    if not os.getenv('LUIS_ENDPOINT'):
+        print_configuration_warning()
+    logging.basicConfig(stream=sys.stdout, level=logging.ERROR,
+                        format='%(asctime)s %(levelname)s %(module)s %(message)s')
+
     if not run_trials(arguments):
         exit(1)
+
+
+def print_configuration_warning():
+    print('\nWARNING: LUIS.ai endpoint is not yet configured properly.'
+          '\nRun the following command to configure Human Framework:\n'
+          '\nhuman config --luis-endpoint <endpoint>')
+    exit(1)
 
 
 if __name__ == '__main__':  # pragma: no cover
