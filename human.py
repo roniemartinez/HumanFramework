@@ -6,10 +6,11 @@
 # __email__ = "ronmarti18@gmail.com"
 import logging
 import os
+import sys
 from argparse import ArgumentParser
-from functools import lru_cache
 from pathlib import Path
 
+import diskcache
 import requests
 from dotenv import load_dotenv
 
@@ -20,9 +21,9 @@ session = requests.Session()
 loader = ActionLoader()
 context = {}
 is_env_loaded = False
+cache = diskcache.Cache(directory=os.path.join(os.path.expanduser('~'), '.humanframework'))  # type: diskcache.Cache
 
 
-@lru_cache()
 def get_intent(query) -> dict:
     """
     Get the intent of the sentence
@@ -30,17 +31,24 @@ def get_intent(query) -> dict:
     :return: intent object
     """
     global session
+    global cache
     global is_env_loaded
     if not is_env_loaded:
-        load_dotenv()
+        load_dotenv(dotenv_path=os.path.join(os.path.curdir, '.env'))
         is_env_loaded = True
     logger.info(f'Parsing intent for "{query}"')
+    q = ' '.join(query.lower().split())
+    cached_intent = cache.get(q)
+    if cached_intent:
+        logger.info(f'Found cached intent: {cached_intent.get("topScoringIntent").get("intent")}')
+        return cached_intent
     for _ in range(3):
         try:
             response = session.get(os.getenv('LUIS_ENDPOINT') + query)
             response.raise_for_status()
             intent = response.json()
-            logging.info(f'Intent: {intent}')
+            logging.info(f'Resolved intent: {intent.get("topScoringIntent").get("intent")}')
+            cache.set(q, intent)
             return intent
         except Exception as e:
             logger.exception(e)
@@ -67,6 +75,7 @@ def execute(query):
 def run_test_string(test_string):
     try:
         for intent in get_intents(test_string):
+            logger.info('Executing test: %s', intent.get('query'))
             if not execute_intent(intent):
                 return False
     except Exception as e:
@@ -142,10 +151,17 @@ def run_trials(arguments):  # pragma: no cover
 
 
 def main():  # pragma: no cover
+    global is_env_loaded
     parser = ArgumentParser(description="Human Framework")
     parser.add_argument('-t', '--test', nargs='*', help='Test files')
     parser.add_argument('-x', '--excluded', nargs='*', help='Excluded files')
     arguments = parser.parse_args()
+
+    load_dotenv(dotenv_path=os.path.join(os.path.curdir, '.env'))
+    is_env_loaded = True
+    logging.basicConfig(stream=sys.stdout, level=logging.INFO,
+                        format='%(asctime)s %(levelname)s %(module)s %(message)s')
+
     if not run_trials(arguments):
         exit(1)
 

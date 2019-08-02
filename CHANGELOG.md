@@ -2,7 +2,14 @@
 
 ## Unreleased
 
+## 0.2.4 - 2019-07-26
+### Added
+- Testing a sample login page
+- Load .env from main()
+- web.assert_element_status
+
 ## 0.2.3 - 2019-07-26
+### Fixed
 - Fix action lookup
 
 ## 0.2.2 - 2019-07-26
