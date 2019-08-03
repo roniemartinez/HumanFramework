@@ -5,5 +5,6 @@ input "mypassword" into "id:password"
 element "class:btn" should be enabled
 click element "class:btn"
 page should contain "Hi, test@test.com"
+sleep for 1 sec
 click element "class:btn"
 close browser
