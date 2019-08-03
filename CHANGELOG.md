@@ -2,7 +2,11 @@
 
 ## Unreleased
 
-## 0.2.4 - 2019-07-26
+## 0.3.0 - 2019-08-03
+### Added
+- core.sleep
+
+## 0.2.4 - 2019-08-02
 ### Added
 - Testing a sample login page
 - Load .env from main()

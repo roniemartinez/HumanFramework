@@ -13,6 +13,9 @@
       "name": "assert.not_equal"
     },
     {
+      "name": "core.sleep"
+    },
+    {
       "name": "math.add"
     },
     {
@@ -154,6 +157,10 @@
     }
   ],
   "prebuiltEntities": [
+    {
+      "name": "datetimeV2",
+      "roles": []
+    },
     {
       "name": "number",
       "roles": []
@@ -410,6 +417,16 @@
           "endPos": 5
         }
       ]
+    },
+    {
+      "text": "sleep 5 seconds",
+      "intent": "core.sleep",
+      "entities": []
+    },
+    {
+      "text": "sleep for 5 hours",
+      "intent": "core.sleep",
+      "entities": []
     },
     {
       "text": "sum of 1 and 2",
