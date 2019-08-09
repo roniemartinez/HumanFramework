@@ -10,6 +10,14 @@ from selenium import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
 
+# TODO: add more boolean attributes
+# Mapping non-existing (antonym) to existing boolean attributes
+ATTRIBUTE_MAP = {
+    'enabled': 'disabled',
+    'visible': 'hidden',
+    'unchecked': 'checked',
+}
+
 logger = logging.getLogger(__name__)
 
 
@@ -24,6 +32,8 @@ def open_browser(entities, context):
             url = entity.get('resolution', {}).get('value')
         elif entity['type'] == 'local_url':
             url = entity['entity'].replace('\\', '/')
+        elif entity['type'] == 'string' and not url:
+            url = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
     if browser == 'firefox':
         driver = webdriver.Firefox()
     elif browser == 'chrome':
@@ -107,41 +117,66 @@ def assert_contain_element(entities, context):
                 selector = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
             elif entity['type'] == 'string' and not selector:
                 selector = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
+        wait = WebDriverWait(driver, 10)
         if element_type == 'text':
-            assert selector in driver.page_source, f'page does not contain "{selector}"'
+            wait.until(lambda x: selector in driver.page_source)
             return True
         elif element_type == 'button':
-            element = _find_element(driver, selector)
-            assert element and (element.tag_name == element_type or (
-                    element.tag_name == 'input' and element.get_attribute('type') == element_type))
+            def element_found(param):
+                element = _find_element(driver, selector)
+                return element and (element.tag_name == element_type or (
+                        element.tag_name == 'input' and element.get_attribute('type') == element_type))
+
+            wait.until(element_found)
             return True
         elif element_type == 'checkbox':
-            element = _find_element(driver, selector)
-            assert element and element.tag_name == 'input' and element.get_attribute('type') == element_type
+            def element_found(param):
+                element = _find_element(driver, selector)
+                return element and element.tag_name == 'input' and element.get_attribute('type') == element_type
+
+            wait.until(element_found)
             return True
         elif element_type == 'element':
-            element = _find_element(driver, selector)
-            assert element
+            def element_found(param):
+                element = _find_element(driver, selector)
+                return element
+
+            wait.until(element_found)
             return True
         elif element_type == 'image':
-            element = _find_element(driver, selector)
-            assert element and element.tag_name == 'img'
+            def element_found(param):
+                element = _find_element(driver, selector)
+                return element and element.tag_name == 'img'
+
+            wait.until(element_found)
             return True
         elif element_type == 'link':
-            element = _find_element(driver, selector)
-            assert element and element.tag_name == 'a'
+            def element_found(param):
+                element = _find_element(driver, selector)
+                return element and element.tag_name == 'a'
+
+            wait.until(element_found)
             return True
         elif element_type == 'list':
-            element = _find_element(driver, selector)
-            assert element and element.tag_name in ('ul', 'ol')
+            def element_found(param):
+                element = _find_element(driver, selector)
+                return element and element.tag_name in ('ul', 'ol')
+
+            wait.until(element_found)
             return True
         elif element_type == 'radio button':
-            element = _find_element(driver, selector)
-            assert element and element.tag_name == 'input' and element.get_attribute('type') == 'radio'
+            def element_found(param):
+                element = _find_element(driver, selector)
+                return element and element.tag_name == 'input' and element.get_attribute('type') == 'radio'
+
+            wait.until(element_found)
             return True
         elif element_type == 'text field':
-            element = _find_element(driver, selector)
-            assert element and element.tag_name == 'input' and element.get_attribute('type') == 'text'
+            def element_found(param):
+                element = _find_element(driver, selector)
+                return element and element.tag_name == 'input' and element.get_attribute('type') == 'text'
+
+            wait.until(element_found)
             return True
     return False
 
@@ -208,19 +243,23 @@ def assert_element_status(entities, context):
     driver = context.get('WEBDRIVER')  # type: WebDriver
     selector = ''  # type: str
     boolean_attribute = ''  # type: str
+    element_type = 'element'
     if driver:
         for entity in entities:
-            if entity['type'] == 'selector':
+            # NOTE: button and radio button entities are detected at the same time
+            if entity['type'] == 'element_type' and not element_type == 'radio button':
+                element_type = entity['entity']
+            elif entity['type'] == 'selector':
                 selector = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
             elif entity['type'] == 'boolean_attribute':
                 boolean_attribute = entity['entity']
         element = _find_element(driver, selector)
         if element:
             wait = WebDriverWait(driver, 10)
-            if boolean_attribute in ('enabled', ):  # TODO: map to reverse
-                wait.until_not(lambda x: element.get_attribute('disabled'))
+            if boolean_attribute in ATTRIBUTE_MAP.keys():
+                wait.until_not(lambda x: element.get_attribute(ATTRIBUTE_MAP.get(boolean_attribute)))
                 return True
-            else:
-                wait.until(lambda x: element.get_attribute('disabled'))
+            elif boolean_attribute in ATTRIBUTE_MAP.values():
+                wait.until(lambda x: element.get_attribute(boolean_attribute))
                 return True
     return False

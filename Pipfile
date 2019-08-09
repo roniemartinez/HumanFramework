@@ -4,6 +4,8 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+flask = "==1.1.1"
+gevent = "==1.4.0"
 pytest = "==5.0.1"
 pytest-cov = "==2.7.1"
 pytest-html = "==1.21.1"

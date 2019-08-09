@@ -5,6 +5,7 @@
 ## 0.4.0 - 2019-08-09
 ### Added
 - Add "How it works" section in README (#11)
+- Add web testing features (#13)
 
 ## 0.3.0 - 2019-08-03
 ### Added
