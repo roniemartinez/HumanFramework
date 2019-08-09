@@ -15,6 +15,17 @@ This makes testers think like end-users.
 Human Framework was inspired by [Robot Framework](https://robotframework.org/) but leans towards 
 Natural Language Processing (NLP) for writing test cases.
 
+## How it works
+
+![Architecture](images/architecture.png)
+
+The architecture of Human Framework can be simplified into 2 steps- Intent Classification and Action Execution:
+
+1. Human Framework reads the test case files and then uses an Intent Classifier (e.g. LUIS.ai) to identify intents and entities.
+For example, the sentence "open chrome browser" will be identified with the intent "web.open_browser" and entity "chrome" as the browser type.
+2. Human Framework then executes the action specific for the classified intent. 
+For example, the intent "web.open_browser" will use Selenium library to automate opening a chrome browser.
+
 ## Usage
 
 ### Create an Azure account
@@ -122,6 +133,19 @@ trial
 ```
 
 With this structure, you can simple type `human` to run the test cases.
+
+## The future of Human Framework
+
+- **Integrated Editor** - While testing was greatly simplified because Human Framework will just execute sentences, 
+using the terminal to install Python and several libraries is still more developer-centric.
+To remove this technical requirement, another major goal of the Human Framework project is to release a 
+one-click installer which should include new features like an integrated IDE/Web IDE or Text Editor. 
+This will greatly increase tester's productivity.
+- **Language Support** - English is not the only written language and not all testers use the English language.
+Supporting most languages will get more testers to adopt Human Framework. 
+- **Free Trial** - While LUIS.ai is very simple to use and accurate compared to other Intent Classifiers, it is not cheap.
+To get more users, a free option like Rasa NLU can be offered to free trial users. 
+As a free trial, it will have lesser actions.
 
 ## Author
 

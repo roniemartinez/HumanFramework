@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.4.0 - 2019-08-09
+### Added
+- Add "How it works" section in README (#11)
+
 ## 0.3.0 - 2019-08-03
 ### Added
 - core.sleep
