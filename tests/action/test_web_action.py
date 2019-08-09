@@ -73,3 +73,24 @@ click element "xpath://*[@id="click-me"]"
 click image "css:.my-image"
 click link "link:Mountain"
 close browser""")
+
+
+def test_sample_page():
+    assert run_test_string("""
+open chrome "https://humanframework.easyaspy.org"
+page title should be "Human Framework Test | Login"
+element "name:username" should be visible
+element "name:password" should be enabled
+element "name:hidden-element" should be hidden
+enter "username" into text field "name:username"
+type "wrong password" into element "name:password"
+click button "id:submit"
+wait until page contains "Incorrect username/password"
+enter "username" into text field "name:username"
+type "password" into element "name:password"
+click button "id:submit"
+page title should be "Human Framework Test | Home"
+checkbox "name:unchecked" should be unchecked
+checkbox "name:checked" should be checked
+close browser    
+""")

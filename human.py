@@ -40,7 +40,7 @@ def get_intent(query) -> dict:
     global cache
     global is_env_loaded
     if not is_env_loaded:
-        load_dotenv(dotenv_path=os.path.join(os.path.curdir, '.env'))
+        load_dotenv(dotenv_path=CONFIG_FILE)
         is_env_loaded = True
     logger.info(f'Parsing intent for "{query}"')
     q = ' '.join(query.lower().split())

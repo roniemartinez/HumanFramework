@@ -65,6 +65,18 @@
         {
           "canonicalForm": "enabled",
           "list": []
+        },
+        {
+          "canonicalForm": "visible",
+          "list": []
+        },
+        {
+          "canonicalForm": "hidden",
+          "list": []
+        },
+        {
+          "canonicalForm": "unchecked",
+          "list": []
         }
       ],
       "roles": []
@@ -254,6 +266,11 @@
       ]
     },
     {
+      "text": "checkbox \"id:name\" should be checked",
+      "intent": "web.assert_element_status",
+      "entities": []
+    },
+    {
       "text": "click button \"id:hello\"",
       "intent": "web.click_element",
       "entities": []
@@ -286,6 +303,11 @@
     {
       "text": "element \"id:hello\" should be enabled",
       "intent": "web.assert_element_status",
+      "entities": []
+    },
+    {
+      "text": "enter \"how are you?\" into text field \"id:question\"",
+      "intent": "web.input",
       "entities": []
     },
     {
@@ -354,7 +376,22 @@
       "entities": []
     },
     {
+      "text": "page title should be \"easyaspy | about\"",
+      "intent": "web.assert_title",
+      "entities": []
+    },
+    {
       "text": "page title should be \"google\"",
+      "intent": "web.assert_title",
+      "entities": []
+    },
+    {
+      "text": "page title should be \"hello world\"",
+      "intent": "web.assert_title",
+      "entities": []
+    },
+    {
+      "text": "page title should be \"luis (language understanding) - cognitive services - microsoft azure\"",
       "intent": "web.assert_title",
       "entities": []
     },
@@ -444,23 +481,33 @@
       "entities": []
     },
     {
-      "text": "title should be \"easyaspy | about\"",
-      "intent": "web.assert_title",
-      "entities": []
-    },
-    {
-      "text": "title should be \"hello world\"",
-      "intent": "web.assert_title",
-      "entities": []
-    },
-    {
-      "text": "title should be \"luis (language understanding) - cognitive services - microsoft azure\"",
-      "intent": "web.assert_title",
-      "entities": []
-    },
-    {
       "text": "type \"hello world\" into element \"name:my-input\"",
       "intent": "web.input",
+      "entities": []
+    },
+    {
+      "text": "wait until element \"class:btn\" is disabled",
+      "intent": "web.assert_element_status",
+      "entities": []
+    },
+    {
+      "text": "wait until element \"id:hello\" is enabled",
+      "intent": "web.assert_element_status",
+      "entities": []
+    },
+    {
+      "text": "wait until page contains \"sample page\"",
+      "intent": "web.assert_contain_element",
+      "entities": []
+    },
+    {
+      "text": "wait until page contains image \"css:[src=https://cdn.pixabay.com/photo/2017/03/15/13/27/rough-horn-2146181_960_720.jpg]\"",
+      "intent": "web.assert_contain_element",
+      "entities": []
+    },
+    {
+      "text": "wait until page contains text \"hello world!\"",
+      "intent": "web.assert_contain_element",
       "entities": []
     }
   ],
