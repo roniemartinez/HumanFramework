@@ -8,22 +8,26 @@ from human import run_test_string, run_test
 
 
 def test_run_string():
-    assert run_test_string("""
+    result = run_test_string("""
 add: 1, 2, 3 and 4
 result should be equal to 10
 """)
+    assert result['STATUS']
 
 
 def test_run_string_fail():
-    assert not run_test_string("""
+    result = run_test_string("""
 add: 1, 2, 3 and 4
 result should be equal to 11
 """)
+    assert not result['STATUS']
 
 
 def test_run_test():
-    assert run_test('test_simple')
+    result = run_test('test_simple')
+    assert result['STATUS']
 
 
 def test_run_test_failing():
-    assert not run_test('test_failing')
+    result = run_test('test_failing')
+    assert not result['STATUS']

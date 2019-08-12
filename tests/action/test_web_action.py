@@ -49,7 +49,7 @@ def test_local_file():
 
 def test_local_file_string():
     html = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'sample.html')
-    assert run_test_string(f"""
+    result = run_test_string(f"""
 open chrome file:///{html}
 title should be "Sample Page"
 page should contain "Hello World!"
@@ -73,10 +73,11 @@ click element "xpath://*[@id="click-me"]"
 click image "css:.my-image"
 click link "link:Mountain"
 close browser""")
+    assert result['STATUS']
 
 
 def test_sample_page():
-    assert run_test_string("""
+    result = run_test_string("""
 open chrome "https://humanframework.easyaspy.org"
 page title should be "Human Framework Test | Login"
 element "name:username" should be visible
@@ -94,3 +95,4 @@ checkbox "name:unchecked" should be unchecked
 checkbox "name:checked" should be checked
 close browser    
 """)
+    assert result['STATUS']

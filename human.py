@@ -4,21 +4,28 @@
 # __credits__ = ["Ronie Martinez"]
 # __maintainer__ = "Ronie Martinez"
 # __email__ = "ronmarti18@gmail.com"
+import json
 import logging
 import os
 import sys
+import webbrowser
 from argparse import ArgumentParser
+from datetime import datetime
 from pathlib import Path
+from platform import platform
 
 import diskcache
 import requests
 from dotenv import load_dotenv, set_key
+from jinja2 import Environment, select_autoescape, FileSystemLoader
 
 from human_framework.action_loader import ActionLoader
 
-logger = logging.getLogger(__name__)
+LOG_FORMAT = '%(asctime)s %(levelname)s %(module)s %(message)s'
 CONFIG_DIR = os.path.join(os.path.expanduser('~'), '.humanframework')
 CONFIG_FILE = os.path.join(CONFIG_DIR, 'config')
+
+logger = logging.getLogger(__name__)
 if not os.path.exists(CONFIG_DIR):
     os.makedirs(CONFIG_DIR, exist_ok=True)
 if not os.path.exists(CONFIG_FILE):
@@ -78,35 +85,43 @@ def execute(query):
     return execute_intent(intent)
 
 
-def run_test_string(test_string):
-    intent = {}
+def run_test_string(test_string) -> dict:
+    result = {'CONTENT': test_string}
+    line_number = 1
     try:
-        for intent in get_intents(test_string):
+        for line_number, intent in get_intents(test_string):
             logger.info('Executing test: %s', intent.get('query'))
             if not execute_intent(intent):
-                return False
-    except Exception:
-        print()
-        logger.error(f"Failed on test: query={intent.get('query')}, "
-                     f"intent={intent.get('topScoringIntent').get('intent')}")
-        return False
-    return True
+                logger.error(f"Failed on test: query={intent.get('query')}, "
+                             f"intent={intent.get('topScoringIntent').get('intent')}")
+                result['STATUS'] = False
+                result['LINE_NUMBER'] = line_number
+                return result
+    except Exception as e:
+        result['ERROR'] = str(e)
+        result['STATUS'] = False
+        result['LINE_NUMBER'] = line_number
+        return result
+    result['STATUS'] = True
+    return result
 
 
 def get_intents(test_string):
     intents = []
+    line_number = 1
     for line in test_string.splitlines():
         line = line.strip()
         if line:
             try:
-                intents.append(get_intent(line))
+                intents.append((line_number, get_intent(line)))
             except AssertionError as e:
                 logger.exception(e)
                 raise
+        line_number += 1
     return intents
 
 
-def run_test(test_name):
+def run_test(test_name) -> dict:
     logger.info(f"Testing: {test_name}")
     if isinstance(test_name, str):
         for file in Path('trials').iterdir():
@@ -118,6 +133,8 @@ def run_test(test_name):
 
 
 def run_trials(arguments):  # pragma: no cover
+    report = []
+    current_datetime = datetime.now()
     excluded = arguments.excluded or []
     if isinstance(excluded, str):
         excluded = [excluded]
@@ -134,26 +151,48 @@ def run_trials(arguments):  # pragma: no cover
             for file_ in path.iterdir():
                 if file_.name.startswith('test_') and file_.name.rsplit('.', 1)[0] not in excluded:
                     print(file_, end=' ', flush=True)
-                    if run_test(file_):
+                    result = run_test(file_)
+                    if result['STATUS']:
                         print(" - PASSED", flush=True)
                         passed += 1
                     else:
-                        print(file_, "- FAILED", flush=True)
+                        print("- FAILED", flush=True)
                         failed += 1
+                    result['TEST_NAME'] = str(file_)
+                    result['STATUS'] = 'PASSED' if result['STATUS'] else 'FAILED'
+                    report.append(result)
+
         else:
             if path.name.startswith('test_') and path.name.rsplit('.', 1)[0] not in excluded:
                 print(path, end=' ', flush=True)
-                if run_test(path):
+                result = run_test(path)
+                if result['STATUS']:
                     print(" - PASSED", flush=True)
                     passed += 1
                 else:
-                    print(path, "- FAILED", flush=True)
+                    print("- FAILED", flush=True)
                     failed += 1
+                result['TEST_NAME'] = str(path)
+                result['STATUS'] = 'PASSED' if result['STATUS'] else 'FAILED'
+                report.append(result)
     print(flush=True)
     result = f" {passed} passed "
     if failed:
         result += f"and {failed} failed "
     print(result.center(80, '='), flush=True)
+
+    os.makedirs('reports', exist_ok=True)
+    env = Environment(
+        loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
+        autoescape=select_autoescape(['html', 'xml'])
+    )
+    template = env.get_template('report.html')
+    html_report_name = f'report-{current_datetime.strftime("%Y%m%d%H%M%S")}.html'
+    report_path = os.path.join('reports', html_report_name)
+    with open(report_path, 'w', encoding='utf-8') as f:
+        f.write(template.render(json_data=json.dumps(report), date=current_datetime.strftime("%Y-%m-%d %H:%M:%S"),
+                                platform=platform(), passed=passed, failed=failed))
+    webbrowser.open_new_tab('file://' + os.path.abspath(report_path))
     if failed:
         return False
     return True
@@ -188,8 +227,7 @@ def main():  # pragma: no cover
     is_env_loaded = True
     if not os.getenv('LUIS_ENDPOINT'):
         print_configuration_warning()
-    logging.basicConfig(stream=sys.stdout, level=logging.ERROR,
-                        format='%(asctime)s %(levelname)s %(module)s %(message)s')
+    logging.basicConfig(stream=sys.stdout, level=logging.ERROR, format=LOG_FORMAT)
 
     if not run_trials(arguments):
         exit(1)

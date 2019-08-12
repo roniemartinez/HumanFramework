@@ -10,6 +10,7 @@ pytest-html = "==1.21.1"
 
 [packages]
 diskcache = "==4.0.0"
+Jinja2 = "==2.10.1"
 python-dotenv = "==0.10.3"
 requests = "==2.22.0"
 selenium = "==3.141.0"
