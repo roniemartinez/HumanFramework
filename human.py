@@ -17,7 +17,7 @@ from platform import platform
 import diskcache
 import requests
 from dotenv import load_dotenv, set_key
-from jinja2 import Environment, select_autoescape, FileSystemLoader
+from jinja2 import Environment, select_autoescape, PackageLoader
 
 from human_framework.action_loader import ActionLoader
 
@@ -183,7 +183,7 @@ def run_trials(arguments):  # pragma: no cover
 
     os.makedirs('reports', exist_ok=True)
     env = Environment(
-        loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
+        loader=PackageLoader('human_framework', 'templates'),
         autoescape=select_autoescape(['html', 'xml'])
     )
     template = env.get_template('report.html')
