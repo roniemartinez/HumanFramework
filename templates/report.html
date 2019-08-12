@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Human Framework Report</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.3/bootstrap-table.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <h2>Human Framework Report</h2>
+        </div>
+        <div class="row">
+            <p>
+                <b>Platform:</b> {{ platform }}<br>
+                <b>Date:</b> {{ date }}<br>
+                <b>Passed:</b> {{ passed }}<br>
+                <b>Failed:</b> {{ failed }}<br>
+            </p>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table
+                    id="table"
+                    data-detail-view="true"
+                    data-detail-view-icon="false"
+                    data-detail-view-by-click="true"
+                    data-detail-formatter="detailFormatter">
+                <thead>
+                <tr>
+                    <th data-field="TEST_NAME">Test Name</th>
+                    <th data-field="STATUS" data-formatter="statusFormatter">STATUS</th>
+                </tr>
+                </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.3/bootstrap-table.min.js"></script>
+    <script>
+        function detailFormatter(index, row) {
+            var html = []
+            $.each(row, function (key, value) {
+                if (key === 'CONTENT') {
+                    value = value.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                    html.push('<h6>Content</h6><p>' + value + '</p>')
+                }
+                if (key === 'ERROR') {
+                    value = value.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                    html.push('<h6>Error</h6><p>' + value + '</p>')
+                }
+            })
+            return html.join('')
+        }
+
+        function statusFormatter(value) {
+            var color = 'green';
+            if (value === 'FAILED') {
+                color = 'red';
+            }
+            return '<div style="color: ' + color + '"><b>' + value + '</b></div>'
+        }
+
+        var $table = $('#table')
+
+        $(function() {
+            var data = {{ json_data | safe }}
+            $table.bootstrapTable({data: data})
+        })
+    </script>
+</body>
+</html>

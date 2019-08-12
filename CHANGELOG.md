@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.5.0 - 2019-08-12
+### Added
+- Generate HTML reports (#12)
+
 ## 0.4.0 - 2019-08-09
 ### Added
 - Add "How it works" section in README (#11)
