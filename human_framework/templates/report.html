@@ -5,6 +5,12 @@
     <title>Human Framework Report</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.3/bootstrap-table.min.css" rel="stylesheet">
+    <style>
+        code {
+            font-family: monospace;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -46,11 +52,11 @@
             $.each(row, function (key, value) {
                 if (key === 'CONTENT') {
                     value = value.replace(/(?:\r\n|\r|\n)/g, '<br>');
-                    html.push('<h6>Tests</h6><p>' + value + '</p>')
+                    html.push('<h6>Tests</h6><code>' + value + '</code>')
                 }
                 if (key === 'ERROR') {
                     value = value.replace(/(?:\r\n|\r|\n)/g, '<br>');
-                    html.push('<h6>Error</h6><p>' + value + '</p>')
+                    html.push('<h6>Error</h6><code>' + value + '</code>')
                 }
             })
             return html.join('')
