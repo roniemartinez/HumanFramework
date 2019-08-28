@@ -46,7 +46,7 @@ For example, the intent "**web.open_browser**" will use [Selenium](https://www.s
 ### Create a LUIS.ai account
 
 1. Download the Human Framework training data from https://github.com/roniemartinez/HumanFramework/blob/master/train/en.json
-2. Go to [LUIS.a](https://luis.ai) and create an account
+2. Go to [LUIS.ai](https://luis.ai) and create an account
 3. Click `Import new app`
 
     ![Import new app](images/import-new-app.PNG)
