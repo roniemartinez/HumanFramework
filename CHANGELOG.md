@@ -1,6 +1,10 @@
-# List of changes to HumanFramework
+# List of changes to Human Framework
 
 ## Unreleased
+
+## 0.5.2 - 2019-08-30
+### Changed
+- Move to GPLv3
 
 ## 0.5.1 - 2019-08-12
 ### Fixed

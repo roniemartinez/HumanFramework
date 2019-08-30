@@ -1,16 +1,26 @@
 # Human Framework: Test Automation Framework for Humans™
 
-Human Framework is a test automation framework that uses Natural Language Understanding (NLU).
+> NOTICE: Human Framework is still on the **Proof-of-Concept** stage
+
+> CONTRIBUTE! I am releasing Human Framework under GPLv3 which makes it open source and free.
+> 1. Localization of training data (translation)
+> 2. Adding more intents and actions
+> 3. Reporting bugs
+> 4. Suggesting new features
+
+> NOTICE: I am working on a [RASA NLU](https://rasa.com/docs/rasa/nlu/about/) support
+
+Human Framework is a test automation framework built on top of Natural Language Understanding (NLU) tools.
 It currently depend on [Microsoft LUIS (Language Understanding)](https://www.luis.ai/) for Intent Classification.
 
-Human Framework makes writing test cases easier by letting testers write test cases without the hassle of memorizing
+Human Framework makes writing test cases easier by letting testers write test automation without the hassle of memorizing
 any programming keyword and using the language they are comfortable with - the human language.
 
-LUIS (and other NLU software) makes it possible to write test cases on any written language. 
-Current version only support English. 
+LUIS (and other NLU tools) makes it possible to write test cases on any human language. 
+Current version of Human Framework only supports English. 
 
-On a business setup, Human Framework lessens the need for testers who can write programs, reducing technical requirements.
-This makes testers think like end-users.
+On a business setup, Human Framework lessens the need for testers who can write programs to perform test automation,
+reducing technical requirements. This makes testers think like end-users.
 
 Human Framework was inspired by [Robot Framework](https://robotframework.org/) but leans towards 
 Natural Language Processing (NLP) for writing test cases.
@@ -81,8 +91,9 @@ For example, the intent "**web.open_browser**" will use [Selenium](https://www.s
 
 ### Installing Human Framework
 
-Human Framework is written in Python. Start by downloading Python from [python.org](https://python.org) and install 
-Human Framework using the following command in terminal/cmd:
+Human Framework is written in Python 3. Start by downloading/installing Python from [python.org](https://python.org). 
+ 
+To install Human Framework, enter the following command into the terminal/cmd:
 
 ```bash
 pip install -e git+git@github.com:roniemartinez/HumanFramework.git#egg=humanframework
@@ -96,8 +107,6 @@ Use the copied endpoint from LUIS.ai and setup Human Framework
 human config --luis-endpoint <endpoint>
 ```
 
-Note that in order to install Human Framework, **access to the Github private repository is REQUIRED**.
-
 ### Installing Drivers
 
 Human Framework depends on [Selenium](https://www.seleniumhq.org/) for testing web applications. Download your desired 
@@ -105,7 +114,7 @@ Human Framework depends on [Selenium](https://www.seleniumhq.org/) for testing w
 
 ### Writing tests
 
-Write a text file (.txt) containing your tests. For example, if we have a file named `test_web.txt`:
+Write a text file (test_*.txt) containing your tests. For example, if we have a file named `test_web.txt`:
 
 ```text
 open chrome https://python.org
@@ -132,20 +141,23 @@ trial
 |- ...
 ```
 
-With this structure, you can simple type `human` to run the test cases.
+With this structure, you can simply type `human` to run the test cases.
 
 ## The future of Human Framework
 
 - **Integrated Editor** - While testing was greatly simplified because Human Framework will just execute sentences, 
 using the terminal to install Python and several libraries is still more developer-centric.
 To remove this technical requirement, another major goal of the Human Framework project is to release a 
-one-click installer which should include new features like an integrated IDE/Web IDE or Text Editor. 
+one-click installer which should include new features like an integrated IDE/Editor. 
 This will greatly increase tester's productivity.
-- **Language Support** - English is not the only written language and not all testers use the English language.
-Supporting most languages will get more testers to adopt Human Framework. 
-- **Free Trial** - While LUIS.ai is very simple to use and accurate compared to other Intent Classifiers, it is not cheap.
-To get more users, a free option like [Rasa NLU](https://rasa.com/docs/rasa/nlu/about/) can be offered to free trial users. 
-As a free trial, it will have limited actions.
+- **Language Support** - Not all testers use the English language. Supporting most languages will benefit more testers around the world. 
+- **NLU Options** - While LUIS.ai is very simple to use and accurate compared to other Intent Classifiers, it is not cheap.
+To support more testers, a free option like [Rasa NLU](https://rasa.com/docs/rasa/nlu/about/) can be used as an alternative.
+
+## Limitations
+
+I only implemented a few intents and actions for the proof-of-concept stage.
+To know what are the possible tests that you can do with Human Framework, check the contents of `trials` and `tests` folders.
 
 ## Author
 
