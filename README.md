@@ -13,17 +13,25 @@
 Human Framework is a test automation framework built on top of Natural Language Understanding (NLU) tools.
 It currently depend on [Microsoft LUIS (Language Understanding)](https://www.luis.ai/) for Intent Classification.
 
-Human Framework makes writing test cases easier by letting testers write test automation without the hassle of memorizing
-any programming keyword and using the language they are comfortable with - the human language.
+Human Framework tries to introduce a new way of automation testing by making it easier and more natural, by simply writing test steps in English or in any human language the tester is more verse with. For example:
+
+```
+Open chrome browser https://devpost.com
+Page title should be "Devpost - The home for hackathons"
+Page should contain link "link:About"
+Close browser
+```
 
 LUIS (and other NLU tools) makes it possible to write test cases on any human language. 
 Current version of Human Framework only supports English. 
 
 On a business setup, Human Framework lessens the need for testers who can write programs to perform test automation,
-reducing technical requirements. This makes testers think like end-users.
+reducing technical requirements. This makes testers think like end-users and not as developers.
 
 Human Framework was inspired by [Robot Framework](https://robotframework.org/) but leans towards 
 Natural Language Processing (NLP) for writing test cases.
+
+**"Human Framework is the Siri or Alexa of automation testing." (minus the voice, but it is possible in the future)**
 
 ## How it works
 
