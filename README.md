@@ -2,7 +2,7 @@
 
 > NOTICE: Human Framework is still on the **Proof-of-Concept** stage
 
-> CONTRIBUTE! I am releasing Human Framework under GPLv3 which makes it open source and free.
+> CONTRIBUTE! I am releasing Human Framework under GPLv3 which makes it open source and free. Contribute by:
 > 1. Localization of training data (translation)
 > 2. Adding more intents and actions
 > 3. Reporting bugs
