@@ -97,6 +97,8 @@ For example, the intent "**web.open_browser**" will use [Selenium](https://www.s
 4. Go back to `Keys and Endpoints` and select the environment you used to publish your app (labeled `URL referencing slot`)
 5. Copy the endpoint assigned resource in #2
 
+**NOTE: After copying the endpoint, enter it to a browser's address bar to make sure that it is accessible., Otherwise, repeat the steps or use the Starter_Key which will only give you 1000 API calls**
+
 ### Installing Human Framework
 
 Human Framework is written in Python 3. Start by downloading/installing Python from [python.org](https://python.org). 
