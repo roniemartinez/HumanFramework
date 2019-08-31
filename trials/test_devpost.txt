@@ -1,0 +1,6 @@
+Open chrome browser https://devpost.com
+Page title should be "Devpost - The home for hackathons"
+Page should contain link "About"
+Click link "About"
+Page title should be "About us · Devpost"
+Close browser

@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 0.5.3 - 2019-08-31
+### Changed
+- Selector 'link:' and 'partial link:' are now optional if element type is defined
+- Update README
+
+### Added
+- Add test_devpost.txt
+
 ## 0.5.2 - 2019-08-30
 ### Changed
 - Move to GPLv3

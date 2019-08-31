@@ -2,31 +2,35 @@
 
 > NOTICE: Human Framework is still on the **Proof-of-Concept** stage
 
-> CONTRIBUTE! I am releasing Human Framework under GPLv3 which makes it open source and free. Contribute by:
+> CONTRIBUTE! I am releasing Human Framework under GPLv3 which makes it open source and free.
+> 
+> Contribute by:
 > 1. Localization of training data (translation)
 > 2. Adding more intents and actions
 > 3. Reporting bugs
 > 4. Suggesting new features
 
-> NOTICE: I am working on a [RASA NLU](https://rasa.com/docs/rasa/nlu/about/) support
+> NOTICE: I am working on a [Rasa NLU](https://rasa.com/docs/rasa/nlu/about/) support
 
-Human Framework is a test automation framework built on top of Natural Language Understanding (NLU) tools.
-It currently depend on [Microsoft LUIS (Language Understanding)](https://www.luis.ai/) for Intent Classification.
+Human Framework is a test automation framework designed for testers without software programming background by allowing them to write test steps or instructions in their own language like English.
 
-Human Framework tries to introduce a new way of automation testing by making it easier and more natural, by simply writing test steps in English or in any human language the tester is more verse with. For example:
+Human Framework uses Natural Language Understanding (NLU) for intent classification and entity extraction to be able to perform specific actions. 
+It currently depend on [Microsoft LUIS (Language Understanding)](https://www.luis.ai/).
+
+Below is an example of test instructions that Human Framework can understand.
+To get an idea of what specific sentences are supported, check the the content of `trials` and `tests` folder.
 
 ```
 Open chrome browser https://devpost.com
 Page title should be "Devpost - The home for hackathons"
-Page should contain link "link:About"
+Page should contain link "About"
+Click link "About"
+Page title should be "About us · Devpost"
 Close browser
 ```
 
 LUIS (and other NLU tools) makes it possible to write test cases on any human language. 
 Current version of Human Framework only supports English. 
-
-On a business setup, Human Framework lessens the need for testers who can write programs to perform test automation,
-reducing technical requirements. This makes testers think like end-users and not as developers.
 
 Human Framework was inspired by [Robot Framework](https://robotframework.org/) but leans towards 
 Natural Language Processing (NLP) for writing test cases.
@@ -124,7 +128,8 @@ Human Framework depends on [Selenium](https://www.seleniumhq.org/) for testing w
 
 ### Writing tests
 
-Write a text file (test_*.txt) containing your tests. For example, if we have a file named `test_web.txt`:
+Write a text file (test_*.txt) containing your tests and save it to local working directory where you placed the Selenium Drivers.
+For example, if we have a file named `test_web.txt`:
 
 ```text
 open chrome https://python.org
