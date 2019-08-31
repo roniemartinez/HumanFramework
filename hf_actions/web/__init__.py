@@ -75,7 +75,7 @@ def assert_title(entities, context):
     return False
 
 
-def _find_element(driver, selector):
+def _find_element(driver, selector, element_type=None):
     element = None
     if selector.startswith('id:'):
         id_ = selector.split(':', 1)[1].strip()
@@ -95,12 +95,18 @@ def _find_element(driver, selector):
     elif selector.startswith('css:'):
         css = selector.split(':', 1)[1].strip()
         element = driver.find_element_by_css_selector(css)
-    elif selector.startswith('link:'):
-        link = selector.split(':', 1)[1].strip()
-        element = driver.find_element_by_link_text(link)
-    elif selector.startswith('partial link:'):
-        link = selector.split(':', 1)[1].strip()
+    elif selector.startswith('partial link:') or element_type == 'partial link':
+        try:
+            link = selector.split(':', 1)[1].strip()
+        except IndexError:
+            link = selector
         element = driver.find_element_by_partial_link_text(link)
+    elif selector.startswith('link:') or element_type == 'link':
+        try:
+            link = selector.split(':', 1)[1].strip()
+        except IndexError:
+            link = selector
+        element = driver.find_element_by_link_text(link)
     return element
 
 
@@ -123,7 +129,7 @@ def assert_contain_element(entities, context):
             return True
         elif element_type == 'button':
             def element_found(param):
-                element = _find_element(driver, selector)
+                element = _find_element(driver, selector, element_type)
                 return element and (element.tag_name == element_type or (
                         element.tag_name == 'input' and element.get_attribute('type') == element_type))
 
@@ -131,49 +137,49 @@ def assert_contain_element(entities, context):
             return True
         elif element_type == 'checkbox':
             def element_found(param):
-                element = _find_element(driver, selector)
+                element = _find_element(driver, selector, element_type)
                 return element and element.tag_name == 'input' and element.get_attribute('type') == element_type
 
             wait.until(element_found)
             return True
         elif element_type == 'element':
             def element_found(param):
-                element = _find_element(driver, selector)
+                element = _find_element(driver, selector, element_type)
                 return element
 
             wait.until(element_found)
             return True
         elif element_type == 'image':
             def element_found(param):
-                element = _find_element(driver, selector)
+                element = _find_element(driver, selector, element_type)
                 return element and element.tag_name == 'img'
 
             wait.until(element_found)
             return True
         elif element_type == 'link':
             def element_found(param):
-                element = _find_element(driver, selector)
+                element = _find_element(driver, selector, element_type)
                 return element and element.tag_name == 'a'
 
             wait.until(element_found)
             return True
         elif element_type == 'list':
             def element_found(param):
-                element = _find_element(driver, selector)
+                element = _find_element(driver, selector, element_type)
                 return element and element.tag_name in ('ul', 'ol')
 
             wait.until(element_found)
             return True
         elif element_type == 'radio button':
             def element_found(param):
-                element = _find_element(driver, selector)
+                element = _find_element(driver, selector, element_type)
                 return element and element.tag_name == 'input' and element.get_attribute('type') == 'radio'
 
             wait.until(element_found)
             return True
         elif element_type == 'text field':
             def element_found(param):
-                element = _find_element(driver, selector)
+                element = _find_element(driver, selector, element_type)
                 return element and element.tag_name == 'input' and element.get_attribute('type') == 'text'
 
             wait.until(element_found)
@@ -196,17 +202,17 @@ def click_element(entities, context):
             elif entity['type'] == 'string' and not selector:
                 selector = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
         if element_type == 'button':
-            element = _find_element(driver, selector)
+            element = _find_element(driver, selector, element_type)
             assert element and (element.tag_name == element_type or (
                     element.tag_name == 'input' and element.get_attribute('type') == element_type))
         elif element_type == 'element':
-            element = _find_element(driver, selector)
+            element = _find_element(driver, selector, element_type)
             assert element
         elif element_type == 'image':
-            element = _find_element(driver, selector)
+            element = _find_element(driver, selector, element_type)
             assert element and element.tag_name == 'img'
         elif element_type == 'link':
-            element = _find_element(driver, selector)
+            element = _find_element(driver, selector, element_type)
             assert element and element.tag_name == 'a'
         if element:
             wait = WebDriverWait(driver, 10)
@@ -232,7 +238,7 @@ def input(entities, context):
             elif entity['type'] == 'selector':
                 selector = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
         if element_type in ('element', 'text field'):
-            element = _find_element(driver, selector)
+            element = _find_element(driver, selector, element_type)
             assert element
             element.send_keys(input_string)
             return True
@@ -253,7 +259,7 @@ def assert_element_status(entities, context):
                 selector = context['QUERY'][int(entity['startIndex']) + 1:int(entity['endIndex'])]
             elif entity['type'] == 'boolean_attribute':
                 boolean_attribute = entity['entity']
-        element = _find_element(driver, selector)
+        element = _find_element(driver, selector, element_type)
         if element:
             wait = WebDriverWait(driver, 10)
             if boolean_attribute in ATTRIBUTE_MAP.keys():

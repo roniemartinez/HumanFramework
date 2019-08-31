@@ -32,7 +32,7 @@ def test_local_file():
     assert execute('page should contain element "tag:form"')
     assert execute('page should contain element "xpath:/html/body/p"')
     assert execute('page should contain image "css:.my-image"')
-    assert execute('page should contain link "link:Mountain"')
+    assert execute('page should contain link "Mountain"')
     assert execute('page should contain link "partial link:Mount"')
     assert execute('page should contain list "id:letters"')
     assert execute('page should contain radio button "id:agree"')
@@ -43,7 +43,7 @@ def test_local_file():
     assert execute('click button "id:click-me"')
     assert execute('click element "xpath://*[@id="click-me"]"')
     assert execute('click image "css:.my-image"')
-    assert execute('click link "link:Mountain"')
+    assert execute('click link "Mountain"')
     assert execute('close browser')
 
 
@@ -60,7 +60,7 @@ page should contain checkbox "name:male"
 page should contain element "tag:form"
 page should contain element "xpath:/html/body/p"
 page should contain image "css:.my-image"
-page should contain link "link:Mountain"
+page should contain link "Mountain"
 page should contain link "partial link:Mount"
 page should contain list "id:letters"
 page should contain radio button "id:agree"
@@ -71,7 +71,7 @@ input "my-password" into element "name:password"
 click button "id:click-me"
 click element "xpath://*[@id="click-me"]"
 click image "css:.my-image"
-click link "link:Mountain"
+click link "Mountain"
 close browser""")
     assert result['STATUS']
 
