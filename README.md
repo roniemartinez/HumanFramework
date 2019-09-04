@@ -1,6 +1,6 @@
 # Human Framework: Test Automation Framework for Humans™
 
-> NOTICE: Human Framework is still on the **Proof-of-Concept** stage
+> NOTICE: Human Framework is still in the **Proof-of-Concept** stage
 
 > CONTRIBUTE! I am releasing Human Framework under GPLv3 which makes it open source and free.
 > 
@@ -48,7 +48,7 @@ For example, the sentence "**open chrome browser**" will be identified with the 
 2. Human Framework then executes the action specific for the classified intent. 
 For example, the intent "**web.open_browser**" will use [Selenium](https://www.seleniumhq.org/) to automate opening a chrome browser.
 
-## Usage
+## Usage / Installation
 
 ### Create an Azure account
 
@@ -61,13 +61,13 @@ For example, the intent "**web.open_browser**" will use [Selenium](https://www.s
     
     ![Create cognitive service](images/create-cognitive-services.PNG)
     
-3. Fill up form
+3. Fill up form and click `Create` button
 
     ![Create cognitive service form](images/form-cognitive-services.PNG)
 
 ### Create a LUIS.ai account
 
-1. Download the Human Framework training data from https://github.com/roniemartinez/HumanFramework/blob/master/train/en.json
+1. Download the Human Framework training data from https://raw.githubusercontent.com/roniemartinez/HumanFramework/master/train/en.json and save it with `.json` extension
 2. Go to [LUIS.ai](https://luis.ai) and create an account
 3. Click `Import new app`
 
@@ -101,7 +101,7 @@ For example, the intent "**web.open_browser**" will use [Selenium](https://www.s
 4. Go back to `Keys and Endpoints` and select the environment you used to publish your app (labeled `URL referencing slot`)
 5. Copy the endpoint assigned resource in #2
 
-**NOTE: After copying the endpoint, enter it to a browser's address bar to make sure that it is accessible., Otherwise, repeat the steps or use the Starter_Key which will only give you 1000 API calls**
+**NOTE: After copying the endpoint, enter it to a browser's address bar to make sure that it is accessible., Otherwise, repeat the steps or use the `Starter_Key` which will only give you 1000 API calls**
 
 ### Installing Human Framework
 
@@ -115,10 +115,10 @@ pip install -e git+git@github.com:roniemartinez/HumanFramework.git#egg=humanfram
 
 ### Setting up Human Framework
 
-Use the copied endpoint from LUIS.ai and setup Human Framework
+Use the copied endpoint from LUIS.ai and setup Human Framework. Paste the endpoint enclosed in double quotes.
  
 ```bash
-human config --luis-endpoint <endpoint>
+human config --luis-endpoint "<endpoint>"
 ```
 
 ### Installing Drivers
@@ -147,10 +147,10 @@ human --test test_web.txt
 
 ### Test autodiscovery
 
-Files inside the `trial` folder that starts with the text `test_` are automatically executed.
+Files inside the `trials` folder that starts with the text `test_` are automatically executed.
 
 ```text
-trial
+trials
 |- test_simple.txt
 |- test_simple_2.txt
 |- ...
