@@ -21,10 +21,9 @@ script:
 
 deploy:
   provider: pypi
-  user: $TEST_PYPI_USER
-  password: $TEST_PYPI_PASS
-  server: https://test.pypi.org/legacy/
+  user: $PYPI_USER
+  password: $PYPI_PASS
   distributions: "sdist bdist_wheel"
   on:
-    branch: develop
+    branch: master
     condition: $TRAVIS_PYTHON_VERSION = "3.7"
