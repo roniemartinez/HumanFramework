@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.6.1 - 2019-09-08
+### Changed
+- Update README and setup.cfg
+
 ## 0.6.0 - 2019-09-08
 ### Added
 - Submit to TestPyPI and PyPI (#22)
