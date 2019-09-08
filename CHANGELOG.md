@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.6.0 - 2019-09-08
+### Added
+- Submit to TestPyPI and PyPI (#22)
+
 ## 0.5.3 - 2019-08-31
 ### Changed
 - Selector 'link:' and 'partial link:' are now optional if element type is defined

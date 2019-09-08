@@ -19,9 +19,6 @@
       "name": "math.add"
     },
     {
-      "name": "None"
-    },
-    {
       "name": "web.assert_contain_element"
     },
     {
