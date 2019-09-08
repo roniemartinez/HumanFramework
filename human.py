@@ -19,6 +19,7 @@ import requests
 from dotenv import load_dotenv, set_key
 from jinja2 import Environment, select_autoescape, PackageLoader
 
+from human_framework import __version__
 from human_framework.action_loader import ActionLoader
 
 LOG_FORMAT = '%(asctime)s %(levelname)s %(module)s %(message)s'
@@ -191,7 +192,7 @@ def run_trials(arguments):  # pragma: no cover
     report_path = os.path.join('reports', html_report_name)
     with open(report_path, 'w', encoding='utf-8') as f:
         f.write(template.render(json_data=json.dumps(report), date=current_datetime.strftime("%Y-%m-%d %H:%M:%S"),
-                                platform=platform(), passed=passed, failed=failed))
+                                platform=platform(), passed=passed, failed=failed, version=__version__))
     webbrowser.open_new_tab('file://' + os.path.abspath(report_path))
     if failed:
         return False
@@ -203,6 +204,7 @@ def main():  # pragma: no cover
     parser = ArgumentParser(description="Human Framework")
     parser.add_argument('-t', '--test', nargs='*', dest='test', help='Test files')
     parser.add_argument('-x', '--excluded', nargs='*', dest='excluded', help='Excluded files')
+    parser.add_argument('-V', '--version', action='version', version='%(prog)s ' + __version__)
     sub_commands = parser.add_subparsers()
     config_parser = sub_commands.add_parser('config', help="Human Framework configuration")
     config_parser.add_argument('--luis-endpoint', nargs='?', dest='luis_endpoint', required=True,
