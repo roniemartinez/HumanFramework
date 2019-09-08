@@ -110,7 +110,7 @@ Human Framework is written in Python 3. Start by downloading/installing Python f
 To install Human Framework, enter the following command into the terminal/cmd:
 
 ```bash
-pip install -e git+git@github.com:roniemartinez/HumanFramework.git#egg=humanframework
+pip install humanframework
 ```
 
 ### Setting up Human Framework

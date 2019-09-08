@@ -6,4 +6,10 @@
 # __email__ = "ronmarti18@gmail.com"
 from setuptools import setup
 
-setup()
+from human_framework import __version__
+
+
+setup(
+    version=__version__,
+    download_url=f'https://github.com/roniemartinez/HumanFramework/tarball/{__version__}'
+)
