@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 0.6.2 - 2019-09-09
+- Update README
+
 ## 0.6.1 - 2019-09-08
 ### Changed
 - Update README and setup.cfg
