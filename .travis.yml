@@ -17,7 +17,7 @@ install:
   - pipenv install --dev --skip-lock
 
 script:
-  pipenv run pytest --version  # do no run any tests
+  pipenv run pytest --version  # do not run any tests
 
 deploy:
   provider: pypi

@@ -82,7 +82,8 @@ For example, the intent "**web.open_browser**" will use [Selenium](https://www.s
     ![Done import new app](images/done-import-new-app.PNG)
     
 6. Click `Done`
-7. On the application dashboard, click `Train` to train your LUIS.ai app
+7. Click on the application you created.
+8. On the application dashboard, click `Train` to train your LUIS.ai app
 
 ### Connecting Azure account to LUIS.ai and publishing
 
